@@ -207,6 +207,71 @@
             "sourceType": "lecture"
           }
         ]
+      },
+      {
+        "id": "neurosurgery__lecture__kok",
+        "name": "Kok",
+        "type": "lecture",
+        "subjectName": "Neurosurgery",
+        "path": "Neurosurgery/Kok.txt",
+        "questions": [
+          {
+            "id": "neurosurgery__lecture__kok__1__lqdv6s",
+            "number": "1",
+            "text": "Which ?",
+            "options": [
+              "abdullah",
+              "abdullah 2",
+              "abdullah 3",
+              "abdullah 4"
+            ],
+            "originalOptions": [
+              "abdullah",
+              "abdullah 2",
+              "abdullah 3",
+              "abdullah 4"
+            ],
+            "correctAnswer": "B) abdullah 2",
+            "correctAnswerText": "abdullah 2",
+            "correctIndex": 0,
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "Kok",
+            "groupName": "Kok",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "neurosurgery__lecture__kok__2__ki6c3v",
+            "number": "2",
+            "text": "How ajah djdj ?",
+            "options": [
+              "u",
+              "L",
+              "M",
+              "R"
+            ],
+            "originalOptions": [
+              "u",
+              "L",
+              "M",
+              "R"
+            ],
+            "correctAnswer": "C) M",
+            "correctAnswerText": "M",
+            "correctIndex": 2,
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "Kok",
+            "groupName": "Kok",
+            "sourceType": "lecture"
+          }
+        ]
       }
     ],
     "ai": [],
@@ -407,10 +472,66 @@
         "lectureName": "Back Pain",
         "groupName": "Back Pain",
         "sourceType": "lecture"
+      },
+      {
+        "id": "neurosurgery__lecture__kok__1__lqdv6s",
+        "number": "1",
+        "text": "Which ?",
+        "options": [
+          "abdullah",
+          "abdullah 2",
+          "abdullah 3",
+          "abdullah 4"
+        ],
+        "originalOptions": [
+          "abdullah",
+          "abdullah 2",
+          "abdullah 3",
+          "abdullah 4"
+        ],
+        "correctAnswer": "B) abdullah 2",
+        "correctAnswerText": "abdullah 2",
+        "correctIndex": 0,
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "Kok",
+        "groupName": "Kok",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "neurosurgery__lecture__kok__2__ki6c3v",
+        "number": "2",
+        "text": "How ajah djdj ?",
+        "options": [
+          "u",
+          "L",
+          "M",
+          "R"
+        ],
+        "originalOptions": [
+          "u",
+          "L",
+          "M",
+          "R"
+        ],
+        "correctAnswer": "C) M",
+        "correctAnswerText": "M",
+        "correctIndex": 2,
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "Kok",
+        "groupName": "Kok",
+        "sourceType": "lecture"
       }
     ],
-    "totalQuestions": 7,
-    "totalLectures": 1,
+    "totalQuestions": 9,
+    "totalLectures": 2,
     "hasAiFolder": false
   }
 ]
