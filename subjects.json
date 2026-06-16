@@ -209,6 +209,99 @@
         ]
       },
       {
+        "id": "neurosurgery__lecture__headache",
+        "name": "Headache",
+        "type": "lecture",
+        "subjectName": "Neurosurgery",
+        "path": "Neurosurgery/Headache.txt",
+        "questions": [
+          {
+            "id": "neurosurgery__lecture__headache__1__5nvp87",
+            "number": "1",
+            "text": "Headache What is the most likely diagnosis?",
+            "options": [
+              "Migraine",
+              "Tension headache",
+              "Cluster headache",
+              "Temporal arteritis (Giant cell arteritis)"
+            ],
+            "originalOptions": [
+              "Migraine",
+              "Tension headache",
+              "Cluster headache",
+              "Temporal arteritis (Giant cell arteritis)"
+            ],
+            "correctAnswer": "D) Temporal arteritis (Giant cell arteritis)",
+            "correctAnswerText": "Temporal arteritis (Giant cell arteritis)",
+            "correctIndex": 3,
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "Headache",
+            "groupName": "Headache",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "neurosurgery__lecture__headache__2__qro60g",
+            "number": "2",
+            "text": "What is the treatment for temporal arteritis?",
+            "options": [
+              "NSAIDs",
+              "Oral corticosteroids (prednisolone)",
+              "Sumatriptan",
+              "Verapamil"
+            ],
+            "originalOptions": [
+              "NSAIDs",
+              "Oral corticosteroids (prednisolone)",
+              "Sumatriptan",
+              "Verapamil"
+            ],
+            "correctAnswer": "B) Oral corticosteroids (prednisolone)",
+            "correctAnswerText": "Oral corticosteroids (prednisolone)",
+            "correctIndex": 1,
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "Headache",
+            "groupName": "Headache",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "neurosurgery__lecture__headache__3__ayu441",
+            "number": "3",
+            "text": "Which of the following is the drug of choice for prophylaxis of episodic and chronic cluster headache?",
+            "options": [
+              "Amitriptyline",
+              "Greater occipital nerve block",
+              "Verapamil",
+              "Valproic acid"
+            ],
+            "originalOptions": [
+              "Amitriptyline",
+              "Greater occipital nerve block",
+              "Verapamil",
+              "Valproic acid"
+            ],
+            "correctAnswer": "C) Verapamil",
+            "correctAnswerText": "Verapamil",
+            "correctIndex": 2,
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "Headache",
+            "groupName": "Headache",
+            "sourceType": "lecture"
+          }
+        ]
+      },
+      {
         "id": "neurosurgery__lecture__kok",
         "name": "Kok",
         "type": "lecture",
@@ -651,6 +744,90 @@
         "sourceType": "lecture"
       },
       {
+        "id": "neurosurgery__lecture__headache__1__5nvp87",
+        "number": "1",
+        "text": "Headache What is the most likely diagnosis?",
+        "options": [
+          "Migraine",
+          "Tension headache",
+          "Cluster headache",
+          "Temporal arteritis (Giant cell arteritis)"
+        ],
+        "originalOptions": [
+          "Migraine",
+          "Tension headache",
+          "Cluster headache",
+          "Temporal arteritis (Giant cell arteritis)"
+        ],
+        "correctAnswer": "D) Temporal arteritis (Giant cell arteritis)",
+        "correctAnswerText": "Temporal arteritis (Giant cell arteritis)",
+        "correctIndex": 3,
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "Headache",
+        "groupName": "Headache",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "neurosurgery__lecture__headache__2__qro60g",
+        "number": "2",
+        "text": "What is the treatment for temporal arteritis?",
+        "options": [
+          "NSAIDs",
+          "Oral corticosteroids (prednisolone)",
+          "Sumatriptan",
+          "Verapamil"
+        ],
+        "originalOptions": [
+          "NSAIDs",
+          "Oral corticosteroids (prednisolone)",
+          "Sumatriptan",
+          "Verapamil"
+        ],
+        "correctAnswer": "B) Oral corticosteroids (prednisolone)",
+        "correctAnswerText": "Oral corticosteroids (prednisolone)",
+        "correctIndex": 1,
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "Headache",
+        "groupName": "Headache",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "neurosurgery__lecture__headache__3__ayu441",
+        "number": "3",
+        "text": "Which of the following is the drug of choice for prophylaxis of episodic and chronic cluster headache?",
+        "options": [
+          "Amitriptyline",
+          "Greater occipital nerve block",
+          "Verapamil",
+          "Valproic acid"
+        ],
+        "originalOptions": [
+          "Amitriptyline",
+          "Greater occipital nerve block",
+          "Verapamil",
+          "Valproic acid"
+        ],
+        "correctAnswer": "C) Verapamil",
+        "correctAnswerText": "Verapamil",
+        "correctIndex": 2,
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "Headache",
+        "groupName": "Headache",
+        "sourceType": "lecture"
+      },
+      {
         "id": "neurosurgery__lecture__kok__1__lqdv6s",
         "number": "1",
         "text": "Which ?",
@@ -875,8 +1052,8 @@
         "sourceType": "lecture"
       }
     ],
-    "totalQuestions": 15,
-    "totalLectures": 3,
+    "totalQuestions": 18,
+    "totalLectures": 4,
     "hasAiFolder": false
   }
 ]
