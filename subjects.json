@@ -272,6 +272,183 @@
             "sourceType": "lecture"
           }
         ]
+      },
+      {
+        "id": "neurosurgery__lecture__subarachnoid-haemorrhage",
+        "name": "Subarachnoid Haemorrhage",
+        "type": "lecture",
+        "subjectName": "Neurosurgery",
+        "path": "Neurosurgery/Subarachnoid Haemorrhage.txt",
+        "questions": [
+          {
+            "id": "neurosurgery__lecture__subarachnoid-haemorrhage__1__ezq87w",
+            "number": "1",
+            "text": "Subarachnoid Haemorrhage What is the most sensitive test for detection of acute subarachnoid hemorrhage (SAH)?",
+            "options": [
+              "Conventional 4-vessel cerebral angiogram",
+              "CTA brain",
+              "Lumbar puncture (LP)",
+              "CT brain without contrast"
+            ],
+            "originalOptions": [
+              "Conventional 4-vessel cerebral angiogram",
+              "CTA brain",
+              "Lumbar puncture (LP)",
+              "CT brain without contrast"
+            ],
+            "correctAnswer": "C) Lumbar puncture (LP)",
+            "correctAnswerText": "Lumbar puncture (LP)",
+            "correctIndex": 2,
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "Subarachnoid Haemorrhage",
+            "groupName": "Subarachnoid Haemorrhage",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "neurosurgery__lecture__subarachnoid-haemorrhage__2__xpwzgg",
+            "number": "2",
+            "text": "A 62-year-old female patient was admitted to the ICU with aneurysmal SAH. 6 days later, she developed sudden aphasia and right-sided hemiplegia. What is the most likely cause?",
+            "options": [
+              "Rebleeding from MCA aneurysm",
+              "Vasospasm in MCA",
+              "Vasospasm in ACA",
+              "Rebleeding from anterior communicating artery aneurysm"
+            ],
+            "originalOptions": [
+              "Rebleeding from MCA aneurysm",
+              "Vasospasm in MCA",
+              "Vasospasm in ACA",
+              "Rebleeding from anterior communicating artery aneurysm"
+            ],
+            "correctAnswer": "B) Vasospasm in MCA",
+            "correctAnswerText": "Vasospasm in MCA",
+            "correctIndex": 1,
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "Subarachnoid Haemorrhage",
+            "groupName": "Subarachnoid Haemorrhage",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "neurosurgery__lecture__subarachnoid-haemorrhage__3__lo1p2q",
+            "number": "3",
+            "text": "Which of the following is WRONG regarding intracranial aneurysms?",
+            "options": [
+              "Peak age is 55-65 years",
+              "More common in males than in females",
+              "Rupture occurs in 95-97% of symptomatic cases",
+              "Berry aneurysms account for 75-80% of SAH"
+            ],
+            "originalOptions": [
+              "Peak age is 55-65 years",
+              "More common in males than in females",
+              "Rupture occurs in 95-97% of symptomatic cases",
+              "Berry aneurysms account for 75-80% of SAH"
+            ],
+            "correctAnswer": "B) More common in males than in females",
+            "correctAnswerText": "More common in males than in females",
+            "correctIndex": 1,
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "Subarachnoid Haemorrhage",
+            "groupName": "Subarachnoid Haemorrhage",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "neurosurgery__lecture__subarachnoid-haemorrhage__4__f9735r",
+            "number": "4",
+            "text": "A patient with SAH has GCS of 13-14 with no major deficit. What is the WFNS grade?",
+            "options": [
+              "WFNS Grade 1",
+              "WFNS Grade 2",
+              "WFNS Grade 3",
+              "WFNS Grade 4"
+            ],
+            "originalOptions": [
+              "WFNS Grade 1",
+              "WFNS Grade 2",
+              "WFNS Grade 3",
+              "WFNS Grade 4"
+            ],
+            "correctAnswer": "B) WFNS Grade 2",
+            "correctAnswerText": "WFNS Grade 2",
+            "correctIndex": 1,
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "Subarachnoid Haemorrhage",
+            "groupName": "Subarachnoid Haemorrhage",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "neurosurgery__lecture__subarachnoid-haemorrhage__5__cl26kn",
+            "number": "5",
+            "text": "All of the following are in favor of surgical clipping over coiling in the management of intracranial aneurysms EXCEPT:",
+            "options": [
+              "Young patient with long life expectancy",
+              "Aneurysm with wide neck",
+              "Hunt and Hess grade 4 on admission",
+              "Accessible aneurysm location"
+            ],
+            "originalOptions": [
+              "Young patient with long life expectancy",
+              "Aneurysm with wide neck",
+              "Hunt and Hess grade 4 on admission",
+              "Accessible aneurysm location"
+            ],
+            "correctAnswer": "C) Hunt and Hess grade 4 on admission",
+            "correctAnswerText": "Hunt and Hess grade 4 on admission",
+            "correctIndex": 2,
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "Subarachnoid Haemorrhage",
+            "groupName": "Subarachnoid Haemorrhage",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "neurosurgery__lecture__subarachnoid-haemorrhage__6__c4eziy",
+            "number": "6",
+            "text": "What is the treatment for vasospasm after SAH?",
+            "options": [
+              "Triple H therapy (Hemodilution, Hypervolemia, Hypertension)",
+              "Mannitol",
+              "Dexamethasone",
+              "Aspirin"
+            ],
+            "originalOptions": [
+              "Triple H therapy (Hemodilution, Hypervolemia, Hypertension)",
+              "Mannitol",
+              "Dexamethasone",
+              "Aspirin"
+            ],
+            "correctAnswer": "A) Triple H therapy (Hemodilution, Hypervolemia, Hypertension)",
+            "correctAnswerText": "Triple H therapy (Hemodilution, Hypervolemia, Hypertension)",
+            "correctIndex": 0,
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "Subarachnoid Haemorrhage",
+            "groupName": "Subarachnoid Haemorrhage",
+            "sourceType": "lecture"
+          }
+        ]
       }
     ],
     "ai": [],
@@ -528,10 +705,178 @@
         "lectureName": "Kok",
         "groupName": "Kok",
         "sourceType": "lecture"
+      },
+      {
+        "id": "neurosurgery__lecture__subarachnoid-haemorrhage__1__ezq87w",
+        "number": "1",
+        "text": "Subarachnoid Haemorrhage What is the most sensitive test for detection of acute subarachnoid hemorrhage (SAH)?",
+        "options": [
+          "Conventional 4-vessel cerebral angiogram",
+          "CTA brain",
+          "Lumbar puncture (LP)",
+          "CT brain without contrast"
+        ],
+        "originalOptions": [
+          "Conventional 4-vessel cerebral angiogram",
+          "CTA brain",
+          "Lumbar puncture (LP)",
+          "CT brain without contrast"
+        ],
+        "correctAnswer": "C) Lumbar puncture (LP)",
+        "correctAnswerText": "Lumbar puncture (LP)",
+        "correctIndex": 2,
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "Subarachnoid Haemorrhage",
+        "groupName": "Subarachnoid Haemorrhage",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "neurosurgery__lecture__subarachnoid-haemorrhage__2__xpwzgg",
+        "number": "2",
+        "text": "A 62-year-old female patient was admitted to the ICU with aneurysmal SAH. 6 days later, she developed sudden aphasia and right-sided hemiplegia. What is the most likely cause?",
+        "options": [
+          "Rebleeding from MCA aneurysm",
+          "Vasospasm in MCA",
+          "Vasospasm in ACA",
+          "Rebleeding from anterior communicating artery aneurysm"
+        ],
+        "originalOptions": [
+          "Rebleeding from MCA aneurysm",
+          "Vasospasm in MCA",
+          "Vasospasm in ACA",
+          "Rebleeding from anterior communicating artery aneurysm"
+        ],
+        "correctAnswer": "B) Vasospasm in MCA",
+        "correctAnswerText": "Vasospasm in MCA",
+        "correctIndex": 1,
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "Subarachnoid Haemorrhage",
+        "groupName": "Subarachnoid Haemorrhage",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "neurosurgery__lecture__subarachnoid-haemorrhage__3__lo1p2q",
+        "number": "3",
+        "text": "Which of the following is WRONG regarding intracranial aneurysms?",
+        "options": [
+          "Peak age is 55-65 years",
+          "More common in males than in females",
+          "Rupture occurs in 95-97% of symptomatic cases",
+          "Berry aneurysms account for 75-80% of SAH"
+        ],
+        "originalOptions": [
+          "Peak age is 55-65 years",
+          "More common in males than in females",
+          "Rupture occurs in 95-97% of symptomatic cases",
+          "Berry aneurysms account for 75-80% of SAH"
+        ],
+        "correctAnswer": "B) More common in males than in females",
+        "correctAnswerText": "More common in males than in females",
+        "correctIndex": 1,
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "Subarachnoid Haemorrhage",
+        "groupName": "Subarachnoid Haemorrhage",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "neurosurgery__lecture__subarachnoid-haemorrhage__4__f9735r",
+        "number": "4",
+        "text": "A patient with SAH has GCS of 13-14 with no major deficit. What is the WFNS grade?",
+        "options": [
+          "WFNS Grade 1",
+          "WFNS Grade 2",
+          "WFNS Grade 3",
+          "WFNS Grade 4"
+        ],
+        "originalOptions": [
+          "WFNS Grade 1",
+          "WFNS Grade 2",
+          "WFNS Grade 3",
+          "WFNS Grade 4"
+        ],
+        "correctAnswer": "B) WFNS Grade 2",
+        "correctAnswerText": "WFNS Grade 2",
+        "correctIndex": 1,
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "Subarachnoid Haemorrhage",
+        "groupName": "Subarachnoid Haemorrhage",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "neurosurgery__lecture__subarachnoid-haemorrhage__5__cl26kn",
+        "number": "5",
+        "text": "All of the following are in favor of surgical clipping over coiling in the management of intracranial aneurysms EXCEPT:",
+        "options": [
+          "Young patient with long life expectancy",
+          "Aneurysm with wide neck",
+          "Hunt and Hess grade 4 on admission",
+          "Accessible aneurysm location"
+        ],
+        "originalOptions": [
+          "Young patient with long life expectancy",
+          "Aneurysm with wide neck",
+          "Hunt and Hess grade 4 on admission",
+          "Accessible aneurysm location"
+        ],
+        "correctAnswer": "C) Hunt and Hess grade 4 on admission",
+        "correctAnswerText": "Hunt and Hess grade 4 on admission",
+        "correctIndex": 2,
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "Subarachnoid Haemorrhage",
+        "groupName": "Subarachnoid Haemorrhage",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "neurosurgery__lecture__subarachnoid-haemorrhage__6__c4eziy",
+        "number": "6",
+        "text": "What is the treatment for vasospasm after SAH?",
+        "options": [
+          "Triple H therapy (Hemodilution, Hypervolemia, Hypertension)",
+          "Mannitol",
+          "Dexamethasone",
+          "Aspirin"
+        ],
+        "originalOptions": [
+          "Triple H therapy (Hemodilution, Hypervolemia, Hypertension)",
+          "Mannitol",
+          "Dexamethasone",
+          "Aspirin"
+        ],
+        "correctAnswer": "A) Triple H therapy (Hemodilution, Hypervolemia, Hypertension)",
+        "correctAnswerText": "Triple H therapy (Hemodilution, Hypervolemia, Hypertension)",
+        "correctIndex": 0,
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "Subarachnoid Haemorrhage",
+        "groupName": "Subarachnoid Haemorrhage",
+        "sourceType": "lecture"
       }
     ],
-    "totalQuestions": 9,
-    "totalLectures": 2,
+    "totalQuestions": 15,
+    "totalLectures": 3,
     "hasAiFolder": false
   }
 ]
