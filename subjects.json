@@ -1,0 +1,416 @@
+[
+  {
+    "id": "neurosurgery",
+    "name": "Neurosurgery",
+    "lectures": [
+      {
+        "id": "neurosurgery__lecture__back-pain",
+        "name": "Back Pain",
+        "type": "lecture",
+        "subjectName": "Neurosurgery",
+        "path": "Neurosurgery/Back Pain.txt",
+        "questions": [
+          {
+            "id": "neurosurgery__lecture__back-pain__1__oglxqw",
+            "number": "1",
+            "text": "Back Pain Which of the following is an accurate description of mechanical back pain?",
+            "options": [
+              "Low back pain that is worse with prolonged standing and relieved by ambulation",
+              "Low back pain that is worse at rest and relieved by activity",
+              "Low back pain associated with fever and night sweats",
+              "Low back pain with saddle anaesthesia"
+            ],
+            "originalOptions": [
+              "Low back pain that is worse with prolonged standing and relieved by ambulation",
+              "Low back pain that is worse at rest and relieved by activity",
+              "Low back pain associated with fever and night sweats",
+              "Low back pain with saddle anaesthesia"
+            ],
+            "correctAnswer": "A) Low back pain that is worse with prolonged standing and relieved by ambulation",
+            "correctAnswerText": "Low back pain that is worse with prolonged standing and relieved by ambulation",
+            "correctIndex": 0,
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "Back Pain",
+            "groupName": "Back Pain",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "neurosurgery__lecture__back-pain__2__b5s0az",
+            "number": "2",
+            "text": "A 45-year-old worker presents with a 4-week history of lower back pain. The pain is isolated to his lower back and he is not experiencing any signs of radiculopathy. What is the best next step in management?",
+            "options": [
+              "MRI without contrast",
+              "Conservative management (NSAIDs + physiotherapy)",
+              "Lumbar spine X-ray",
+              "Surgical referral"
+            ],
+            "originalOptions": [
+              "MRI without contrast",
+              "Conservative management (NSAIDs + physiotherapy)",
+              "Lumbar spine X-ray",
+              "Surgical referral"
+            ],
+            "correctAnswer": "C) Lumbar spine X-ray",
+            "correctAnswerText": "Lumbar spine X-ray",
+            "correctIndex": 2,
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "Back Pain",
+            "groupName": "Back Pain",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "neurosurgery__lecture__back-pain__3__vh3ohq",
+            "number": "3",
+            "text": "On MRI of the lumbar spine, a disc herniation at L4/L5 is identified compressing a nerve root. What is the most likely level affected?",
+            "options": [
+              "L4 nerve root",
+              "L5 nerve root",
+              "S1 nerve root",
+              "L3 nerve root"
+            ],
+            "originalOptions": [
+              "L4 nerve root",
+              "L5 nerve root",
+              "S1 nerve root",
+              "L3 nerve root"
+            ],
+            "correctAnswer": "B) L5 nerve root",
+            "correctAnswerText": "L5 nerve root",
+            "correctIndex": 1,
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "Back Pain",
+            "groupName": "Back Pain",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "neurosurgery__lecture__back-pain__4__ukmevo",
+            "number": "4",
+            "text": "What are the most common symptoms of cervical myelopathy?",
+            "options": [
+              "Bilateral hand weakness, numbness and pain (radiculopathy)",
+              "Bilateral hand clumsiness and gait instability",
+              "Unilateral leg weakness",
+              "Saddle anaesthesia"
+            ],
+            "originalOptions": [
+              "Bilateral hand weakness, numbness and pain (radiculopathy)",
+              "Bilateral hand clumsiness and gait instability",
+              "Unilateral leg weakness",
+              "Saddle anaesthesia"
+            ],
+            "correctAnswer": "B) Bilateral hand clumsiness and gait instability",
+            "correctAnswerText": "Bilateral hand clumsiness and gait instability",
+            "correctIndex": 1,
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "Back Pain",
+            "groupName": "Back Pain",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "neurosurgery__lecture__back-pain__5__wfiwkv",
+            "number": "5",
+            "text": "A patient presents with loss of sensation below the umbilicus, paraplegia, and stool/urine incontinence. What is the most likely level of injury?",
+            "options": [
+              "T7 fracture",
+              "C7 fracture",
+              "Severe head trauma affecting motor area",
+              "Cauda equina"
+            ],
+            "originalOptions": [
+              "T7 fracture",
+              "C7 fracture",
+              "Severe head trauma affecting motor area",
+              "Cauda equina"
+            ],
+            "correctAnswer": "A) T7 fracture",
+            "correctAnswerText": "T7 fracture",
+            "correctIndex": 0,
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "Back Pain",
+            "groupName": "Back Pain",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "neurosurgery__lecture__back-pain__6__18u3d0",
+            "number": "6",
+            "text": "Which of the following tests does NOT evaluate spinal nerve root compression?",
+            "options": [
+              "Straight leg raise test",
+              "FABER test",
+              "Kernig test",
+              "Lower extremities reflex testing"
+            ],
+            "originalOptions": [
+              "Straight leg raise test",
+              "FABER test",
+              "Kernig test",
+              "Lower extremities reflex testing"
+            ],
+            "correctAnswer": "B) FABER test",
+            "correctAnswerText": "FABER test",
+            "correctIndex": 1,
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "Back Pain",
+            "groupName": "Back Pain",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "neurosurgery__lecture__back-pain__7__l0ug24",
+            "number": "7",
+            "text": "Which nerve root is affected by a C5/C6 disc herniation?",
+            "options": [
+              "C5",
+              "C6",
+              "C7",
+              "C4"
+            ],
+            "originalOptions": [
+              "C5",
+              "C6",
+              "C7",
+              "C4"
+            ],
+            "correctAnswer": "B) C6",
+            "correctAnswerText": "C6",
+            "correctIndex": 2,
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "Back Pain",
+            "groupName": "Back Pain",
+            "sourceType": "lecture"
+          }
+        ]
+      }
+    ],
+    "ai": [],
+    "years": [],
+    "allQuestions": [
+      {
+        "id": "neurosurgery__lecture__back-pain__1__oglxqw",
+        "number": "1",
+        "text": "Back Pain Which of the following is an accurate description of mechanical back pain?",
+        "options": [
+          "Low back pain that is worse with prolonged standing and relieved by ambulation",
+          "Low back pain that is worse at rest and relieved by activity",
+          "Low back pain associated with fever and night sweats",
+          "Low back pain with saddle anaesthesia"
+        ],
+        "originalOptions": [
+          "Low back pain that is worse with prolonged standing and relieved by ambulation",
+          "Low back pain that is worse at rest and relieved by activity",
+          "Low back pain associated with fever and night sweats",
+          "Low back pain with saddle anaesthesia"
+        ],
+        "correctAnswer": "A) Low back pain that is worse with prolonged standing and relieved by ambulation",
+        "correctAnswerText": "Low back pain that is worse with prolonged standing and relieved by ambulation",
+        "correctIndex": 0,
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "Back Pain",
+        "groupName": "Back Pain",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "neurosurgery__lecture__back-pain__2__b5s0az",
+        "number": "2",
+        "text": "A 45-year-old worker presents with a 4-week history of lower back pain. The pain is isolated to his lower back and he is not experiencing any signs of radiculopathy. What is the best next step in management?",
+        "options": [
+          "MRI without contrast",
+          "Conservative management (NSAIDs + physiotherapy)",
+          "Lumbar spine X-ray",
+          "Surgical referral"
+        ],
+        "originalOptions": [
+          "MRI without contrast",
+          "Conservative management (NSAIDs + physiotherapy)",
+          "Lumbar spine X-ray",
+          "Surgical referral"
+        ],
+        "correctAnswer": "C) Lumbar spine X-ray",
+        "correctAnswerText": "Lumbar spine X-ray",
+        "correctIndex": 2,
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "Back Pain",
+        "groupName": "Back Pain",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "neurosurgery__lecture__back-pain__3__vh3ohq",
+        "number": "3",
+        "text": "On MRI of the lumbar spine, a disc herniation at L4/L5 is identified compressing a nerve root. What is the most likely level affected?",
+        "options": [
+          "L4 nerve root",
+          "L5 nerve root",
+          "S1 nerve root",
+          "L3 nerve root"
+        ],
+        "originalOptions": [
+          "L4 nerve root",
+          "L5 nerve root",
+          "S1 nerve root",
+          "L3 nerve root"
+        ],
+        "correctAnswer": "B) L5 nerve root",
+        "correctAnswerText": "L5 nerve root",
+        "correctIndex": 1,
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "Back Pain",
+        "groupName": "Back Pain",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "neurosurgery__lecture__back-pain__4__ukmevo",
+        "number": "4",
+        "text": "What are the most common symptoms of cervical myelopathy?",
+        "options": [
+          "Bilateral hand weakness, numbness and pain (radiculopathy)",
+          "Bilateral hand clumsiness and gait instability",
+          "Unilateral leg weakness",
+          "Saddle anaesthesia"
+        ],
+        "originalOptions": [
+          "Bilateral hand weakness, numbness and pain (radiculopathy)",
+          "Bilateral hand clumsiness and gait instability",
+          "Unilateral leg weakness",
+          "Saddle anaesthesia"
+        ],
+        "correctAnswer": "B) Bilateral hand clumsiness and gait instability",
+        "correctAnswerText": "Bilateral hand clumsiness and gait instability",
+        "correctIndex": 1,
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "Back Pain",
+        "groupName": "Back Pain",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "neurosurgery__lecture__back-pain__5__wfiwkv",
+        "number": "5",
+        "text": "A patient presents with loss of sensation below the umbilicus, paraplegia, and stool/urine incontinence. What is the most likely level of injury?",
+        "options": [
+          "T7 fracture",
+          "C7 fracture",
+          "Severe head trauma affecting motor area",
+          "Cauda equina"
+        ],
+        "originalOptions": [
+          "T7 fracture",
+          "C7 fracture",
+          "Severe head trauma affecting motor area",
+          "Cauda equina"
+        ],
+        "correctAnswer": "A) T7 fracture",
+        "correctAnswerText": "T7 fracture",
+        "correctIndex": 0,
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "Back Pain",
+        "groupName": "Back Pain",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "neurosurgery__lecture__back-pain__6__18u3d0",
+        "number": "6",
+        "text": "Which of the following tests does NOT evaluate spinal nerve root compression?",
+        "options": [
+          "Straight leg raise test",
+          "FABER test",
+          "Kernig test",
+          "Lower extremities reflex testing"
+        ],
+        "originalOptions": [
+          "Straight leg raise test",
+          "FABER test",
+          "Kernig test",
+          "Lower extremities reflex testing"
+        ],
+        "correctAnswer": "B) FABER test",
+        "correctAnswerText": "FABER test",
+        "correctIndex": 1,
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "Back Pain",
+        "groupName": "Back Pain",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "neurosurgery__lecture__back-pain__7__l0ug24",
+        "number": "7",
+        "text": "Which nerve root is affected by a C5/C6 disc herniation?",
+        "options": [
+          "C5",
+          "C6",
+          "C7",
+          "C4"
+        ],
+        "originalOptions": [
+          "C5",
+          "C6",
+          "C7",
+          "C4"
+        ],
+        "correctAnswer": "B) C6",
+        "correctAnswerText": "C6",
+        "correctIndex": 2,
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "Back Pain",
+        "groupName": "Back Pain",
+        "sourceType": "lecture"
+      }
+    ],
+    "totalQuestions": 7,
+    "totalLectures": 1,
+    "hasAiFolder": false
+  }
+]
