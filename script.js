@@ -689,11 +689,89 @@ function renderChecklistSubject(){
         </div>
         <div class="progress-bar" style="margin-top:12px;"><span style="width:${stats.percentage}%"></span></div>
       </div>`;
-  if(el('checklist-subject-lectures')) el('checklist-subject-lectures').innerHTML = subject.lectures.length ? subject.lectures.map(group => { const checked = !!state.checklistCompleted[group.id]; return `<label class="checklist-lecture-row"><input type="checkbox" ${checked?'checked':''} onchange="toggleChecklistLecture('${group.id}')"><span class="checklist-lecture-name ${checked?'completed':''}">${escapeHtml(group.name)}</span><span class="checklist-lecture-count">${group.questions.length} سؤال</span></label>`; }).join('') : '<div class="empty-state"><p>لا توجد محاضرات ضمن هذه المادة.</p></div>';
+if(el('checklist-subject-lectures')) el('checklist-subject-lectures').innerHTML = subject.lectures.length ? subject.lectures.map(group => { const checked = !!state.checklistCompleted[group.id]; return `<label class="checklist-lecture-row"><input type="checkbox" ${checked?'checked':''} disabled><span class="checklist-lecture-name ${checked?'completed':''}" style="cursor:pointer;" onclick="showChecklistLectureConfirmation('${group.id}')">${escapeHtml(group.name)}</span><span class="checklist-lecture-count">${group.questions.length} سؤال</span></label>`; }).join('') : '<div class="empty-state"><p>لا توجد محاضرات ضمن هذه المادة.</p></div>';
 }
 function toggleChecklistSubject(subjectId){ openChecklistSubject(subjectId); }
-function toggleChecklistLecture(groupId){ state.checklistCompleted[groupId] = !state.checklistCompleted[groupId]; saveChecklistStore(); renderChecklist(); if(el('checklist-subject-screen') && el('checklist-subject-screen').classList.contains('active')) renderChecklistSubject(); updateStatisticsIfOpen(); }
-
+function toggleChecklistLecture(groupId){ 
+  const subject = state.currentSubject;
+  if(!subject) return;
+  
+  const lectures = subject.lectures || [];
+  const lectureIndex = lectures.findIndex(g => g.id === groupId);
+  if(lectureIndex === -1) return;
+  
+  const isCurrentlyCompleted = state.checklistCompleted[groupId];
+  
+  if(!isCurrentlyCompleted) {
+    state.checklistCompleted[groupId] = true;
+  } else {
+    state.checklistCompleted[groupId] = true;
+    
+    const completedLecture = lectures[lectureIndex];
+    lectures.splice(lectureIndex, 1);
+    lectures.push(completedLecture);
+  }
+  
+  saveChecklistStore(); 
+  renderChecklistSubject();
+}
+function showChecklistLectureConfirmation(groupId){ 
+  const subject = state.currentSubject;
+  if(!subject) return;
+  
+  const lecture = (subject.lectures || []).find(g => g.id === groupId);
+  if(!lecture) return;
+  
+  showDialog({
+    title: 'تأكيد الإنجاز',
+    message: `هل أتممت ${escapeHtml(lecture.name)} بالفعل؟`,
+    showCancel: true,
+    confirmText: 'نعم',
+    cancelText: 'إلغاء',
+    onConfirm: () => {
+      state.checklistCompleted[groupId] = true;
+      saveChecklistStore();
+      renderChecklistSubject();
+    },
+    onCancel: () => {}
+  });
+  
+  setTimeout(() => {
+    const actions = document.querySelector('#dialog-overlay .dialog-actions');
+    if (!actions) return;
+    
+    const confirmBtn = document.getElementById('dialog-confirm');
+    const cancelBtn = document.getElementById('dialog-cancel');
+    if (!confirmBtn || !cancelBtn) return;
+    
+    confirmBtn.textContent = 'نعم';
+    cancelBtn.textContent = 'إلغاء';
+    
+    const moveBtn = document.createElement('button');
+    moveBtn.className = 'btn-primary dialog-extra-btn';
+    moveBtn.textContent = 'نعم ونقلها للأسفل';
+    moveBtn.onclick = () => {
+      hideDialog();
+      state.checklistCompleted[groupId] = true;
+      
+      const lectures = state.currentSubject.lectures || [];
+      const index = lectures.findIndex(g => g.id === groupId);
+      if(index !== -1) {
+        const lecture = lectures.splice(index, 1)[0];
+        lectures.push(lecture);
+      }
+      
+      saveChecklistStore();
+      renderChecklistSubject();
+    };
+    
+    actions.removeChild(confirmBtn);
+    actions.removeChild(cancelBtn);
+    actions.appendChild(confirmBtn);
+    actions.appendChild(moveBtn);
+    actions.appendChild(cancelBtn);
+  }, 0);
+}
 function openSubject(subjectId){ state.currentSubject=state.displayedSubjects.find(s=>s.id===subjectId) || state.subjects.find(s=>s.id===subjectId) || null; if(!state.currentSubject){ showToast('المادة غير موجودة.','error'); return; } const t=theme(); el('subject-sections-title').textContent=state.currentSubject.name; el('subject-sections-summary').innerHTML=`<div class="subject-summary-grid"><div><span>${t.icons.lectures} المحاضرات</span><strong>${state.currentSubject.lectures.length}</strong></div><div><span>${t.icons.years} Years</span><strong>${state.currentSubject.years.length}</strong></div><div><span>${t.icons.ai} AI</span><strong>${state.currentSubject.ai.length}</strong></div><div><span>${t.icons.progress} إجمالي الأسئلة</span><strong>${state.currentSubject.totalQuestions}</strong></div></div>`; const cards=[]; if(state.currentSubject.lectures.length) cards.push(buildCategoryCard('lectures','Lectures','Lectures',state.currentSubject.lectures.length,countQuestions(state.currentSubject.lectures),true)); if(state.currentSubject.years.length) cards.push(buildCategoryCard('years','Years','Years',state.currentSubject.years.length,countQuestions(state.currentSubject.years),true)); if(state.currentSubject.ai.length || (state.browseMode==='all' && state.currentSubject.hasAiFolder)) cards.push(buildCategoryCard('ai','AI','AI',state.currentSubject.ai.length,countQuestions(state.currentSubject.ai),state.currentSubject.ai.length>0 || (state.browseMode==='all' && state.currentSubject.hasAiFolder))); el('subject-categories').innerHTML=cards.join('') || '<div class="empty-state"><div class="empty-icon">📭</div><p>لا توجد ملفات TXT بعد داخل هذه المادة.</p></div>'; showScreen('subject-sections-screen'); }
 function countQuestions(groups){ return groups.reduce((sum,g)=>sum+g.questions.length,0); }
 function buildCategoryCard(type,title,badgeText,itemCount,totalQuestions,enabled){ if(!enabled) return ''; return `<button class="category-card" onclick="openSubjectCategory('${type}')"><span class="category-badge">${badgeText}</span><div class="category-meta"><div><span>المحاضرات</span><strong>${itemCount}</strong></div><div><span>الأسئلة</span><strong>${totalQuestions}</strong></div></div></button>`; }
