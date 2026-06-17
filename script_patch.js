@@ -45,32 +45,37 @@
     return [];
   }
 
-  function ensureGroupOrder(groups, sectionType, subjectName){
-    if(!Array.isArray(groups) || !groups.length) return groups || [];
-    const actualSubjectName = subjectName || groups[0]?.subjectName || state.currentSubject?.name || 'unknown';
-    const actualSectionType = sectionType || groups[0]?.type || 'lectures';
-    const key = getGroupOrderKey(actualSubjectName, actualSectionType);
-    const originalIds = getOriginalOrderIds(actualSubjectName, actualSectionType);
-    const fallbackIds = originalIds.length ? originalIds : groups.map(g => g.id);
-    const stored = Array.isArray(state.groupPreferences[key]) ? state.groupPreferences[key].slice() : [];
-    const ids = groups.map(g => g.id);
-    const clean = stored.filter(id => ids.includes(id));
-    fallbackIds.forEach(id => { if(ids.includes(id) && !clean.includes(id)) clean.push(id); });
-    ids.forEach(id => { if(!clean.includes(id)) clean.push(id); });
-    state.groupPreferences[key] = clean;
-    saveGroupPreferences();
-    const rank = new Map(clean.map((id,i)=>[id,i]));
-    return groups.slice().sort((a,b)=>(rank.get(a.id) ?? 1e9) - (rank.get(b.id) ?? 1e9));
-  }
+   function ensureGroupOrder(groups, sectionType, subjectName){
+  if(!Array.isArray(groups) || !groups.length) return groups || [];
+  const actualSubjectName = subjectName || groups[0]?.subjectName || state.currentSubject?.name || 'unknown';
+  const actualSectionType = sectionType || groups[0]?.type || 'lectures';
+  const key = getGroupOrderKey(actualSubjectName, actualSectionType);
+  const originalIds = getOriginalOrderIds(actualSubjectName, actualSectionType);
+  const fallbackIds = originalIds.length ? originalIds : groups.map(g => g.id);
+  // نأخذ الترتيب المخزن، وإذا لم يكن موجوداً نستخدم fallback
+  let stored = Array.isArray(state.groupPreferences[key]) ? state.groupPreferences[key].slice() : fallbackIds.slice();
+  // نتأكد من أن جميع ids موجودة في stored، ونضيفها في النهاية إذا كانت مفقودة
+  const ids = groups.map(g => g.id);
+  const clean = stored.filter(id => ids.includes(id));
+  ids.forEach(id => { if(!clean.includes(id)) clean.push(id); });
+  // نُعيد حفظ الترتيب في preferences
+  state.groupPreferences[key] = clean;
+  saveGroupPreferences();
+  const rank = new Map(clean.map((id,i)=>[id,i]));
+  return groups.slice().sort((a,b)=>(rank.get(a.id) ?? 1e9) - (rank.get(b.id) ?? 1e9));
+}
 
   function moveGroupToBottomByInfo(subjectName, sectionType, groupId){
-    const key = getGroupOrderKey(subjectName, sectionType);
-    const arr = Array.isArray(state.groupPreferences[key]) ? state.groupPreferences[key].slice() : getOriginalOrderIds(subjectName, sectionType);
-    const next = arr.filter(id => id !== groupId);
-    next.push(groupId);
-    state.groupPreferences[key] = next;
-    saveGroupPreferences();
-  }
+  const key = getGroupOrderKey(subjectName, sectionType);
+  // الحصول على الترتيب الحالي المخزن أو الترتيب الأصلي
+  let arr = Array.isArray(state.groupPreferences[key]) ? state.groupPreferences[key].slice() : getOriginalOrderIds(subjectName, sectionType);
+  // إزالة العنصر المطلوب نقله
+  arr = arr.filter(id => id !== groupId);
+  // إضافته في النهاية الحقيقية (آخر index)
+  arr.push(groupId);
+  state.groupPreferences[key] = arr;
+  saveGroupPreferences();
+}
 
   function reorderGroupIds(subjectName, sectionType, draggedId, targetId, afterTarget){
     const key = getGroupOrderKey(subjectName, sectionType);
@@ -186,7 +191,8 @@
       if(completed){
         if(!state.checklistCompleted[group.id]){
           state.checklistCompleted[group.id] = true;
-          moveGroupToBottomByInfo(subject.name, sectionType, group.id);
+          // لا نقوم بنقل العنصر إلى الأسفل تلقائياً، بل نتركه في مكانه
+          // moveGroupToBottomByInfo(subject.name, sectionType, group.id);
           changed = true;
         }
       } else {
@@ -195,11 +201,12 @@
           changed = true;
         }
 
-        const prefKey = getGroupOrderKey(subject.name, sectionType);
-        const before = JSON.stringify(Array.isArray(state.groupPreferences[prefKey]) ? state.groupPreferences[prefKey] : []);
-        restoreGroupToOriginalPosition(subject.name, sectionType, group.id);
-        const after = JSON.stringify(Array.isArray(state.groupPreferences[prefKey]) ? state.groupPreferences[prefKey] : []);
-        if(before !== after) changed = true;
+        // لا نقوم باستعادة الترتيب الأصلي تلقائياً، بل نتركه كما هو
+        // const prefKey = getGroupOrderKey(subject.name, sectionType);
+        // const before = JSON.stringify(Array.isArray(state.groupPreferences[prefKey]) ? state.groupPreferences[prefKey] : []);
+        // restoreGroupToOriginalPosition(subject.name, sectionType, group.id);
+        // const after = JSON.stringify(Array.isArray(state.groupPreferences[prefKey]) ? state.groupPreferences[prefKey] : []);
+        // if(before !== after) changed = true;
       }
     }
 
@@ -219,48 +226,58 @@
 
     if(changed){
       try{ saveChecklistStore(); }catch(e){}
-      try{ saveGroupPreferences(); }catch(e){}
+      // لا نحتاج لحفظ groupPreferences هنا لأننا لم نغيره
+      // try{ saveGroupPreferences(); }catch(e){}
     }
 
     return changed;
   }
 
   function setGroupCompleted(groupId, completed, opts){
-    const options = Object.assign({ moveBottom:false, countAsAnswered:false, resetProgress:false }, opts || {});
-    const found = findGroupById(groupId);
-    if(!found) return;
-    const { subject, group, sectionType } = found;
+  const options = Object.assign({ moveBottom:false, countAsAnswered:false, resetProgress:false }, opts || {});
+  const found = findGroupById(groupId);
+  if(!found) return;
+  const { subject, group, sectionType } = found;
 
-    if(completed){
-      state.checklistCompleted[group.id] = true;
+  if(completed){
+    state.checklistCompleted[group.id] = true;
 
-      if(options.countAsAnswered){
-        (group.questions || []).forEach(q => addProgressIdsForQuestion(q));
-      }
-
-      if(options.moveBottom){
-        moveGroupToBottomByInfo(subject.name, sectionType, group.id);
-        if(Array.isArray(state.currentGroups) && state.currentGroups.length){
-          state.currentGroups = ensureGroupOrder(state.currentGroups, sectionType, subject.name);
-        }
-      }
-    } else {
-      delete state.checklistCompleted[group.id];
-
-      if(options.resetProgress){
-        (group.questions || []).forEach(q => removeProgressIdsForQuestion(q));
-      }
-
-      restoreGroupToOriginalPosition(subject.name, sectionType, group.id);
-      if(Array.isArray(state.currentGroups) && state.currentGroups.length){
-        state.currentGroups = ensureGroupOrder(state.currentGroups, sectionType, subject.name);
-      }
+    if(options.countAsAnswered){
+      (group.questions || []).forEach(q => addProgressIdsForQuestion(q));
     }
 
-    saveChecklistStore();
-    saveProgressStore();
-    rerenderAfterChecklistRelatedChange();
+    if(options.moveBottom){
+      // نقل العنصر إلى الأسفل مباشرة دون إعادة ترتيب إضافية
+      moveGroupToBottomByInfo(subject.name, sectionType, group.id);
+      // تحديث currentGroups بناءً على الترتيب الجديد دون استدعاء ensureGroupOrder مرة أخرى
+      if(Array.isArray(state.currentGroups) && state.currentGroups.length){
+        const key = getGroupOrderKey(subject.name, sectionType);
+        const newOrder = state.groupPreferences[key] || [];
+        // إعادة ترتيب currentGroups وفقاً للترتيب الجديد
+        state.currentGroups = state.currentGroups.slice().sort((a, b) => {
+          const ia = newOrder.indexOf(a.id);
+          const ib = newOrder.indexOf(b.id);
+          return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+        });
+      }
+    }
+  } else {
+    delete state.checklistCompleted[group.id];
+
+    if(options.resetProgress){
+      (group.questions || []).forEach(q => removeProgressIdsForQuestion(q));
+    }
+
+    restoreGroupToOriginalPosition(subject.name, sectionType, group.id);
+    if(Array.isArray(state.currentGroups) && state.currentGroups.length){
+      state.currentGroups = ensureGroupOrder(state.currentGroups, sectionType, subject.name);
+    }
   }
+
+  saveChecklistStore();
+  saveProgressStore();
+  rerenderAfterChecklistRelatedChange();
+}
   function markGroupsCompletedBulk(groups){
     groups.forEach(group => {
       state.checklistCompleted[group.id] = true;
@@ -344,9 +361,39 @@
       onCancel:()=>{}
     });
 
-    setTimeout(() => appendMoveToBottomButton(group), 0);
-  };
+    setTimeout(() => {
+      // إعادة تعريف زر "نعم ونقلها للأسفل" لضمان النقل الصحيح
+      const actions = document.querySelector('#dialog-overlay .dialog-actions');
+      if(!actions) return;
+      actions.querySelectorAll('.dialog-extra-btn').forEach(btn => btn.remove());
 
+      const moveBtn = document.createElement('button');
+      moveBtn.className = 'btn-primary dialog-extra-btn';
+      moveBtn.textContent = 'نعم ونقلها للأسفل';
+      moveBtn.onclick = function(){
+        hideDialog();
+        // تعليم كمكتمل ونقل للأسفل
+        setGroupCompleted(group.id, true, { moveBottom:true, countAsAnswered:true });
+        // تحديث currentGroups بالترتيب الجديد
+        const found = findGroupById(group.id);
+        if(found){
+          const { subject, sectionType } = found;
+          if(Array.isArray(state.currentGroups) && state.currentGroups.length){
+            const key = getGroupOrderKey(subject.name, sectionType);
+            const newOrder = state.groupPreferences[key] || [];
+            state.currentGroups = state.currentGroups.slice().sort((a, b) => {
+              const ia = newOrder.indexOf(a.id);
+              const ib = newOrder.indexOf(b.id);
+              return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+            });
+          }
+        }
+        if(typeof renderSelectionScreenWithEnhancements === 'function') renderSelectionScreenWithEnhancements();
+        showToast('تم تعليم العنصر كمكتمل ونقله للأسفل.', 'success');
+      };
+      actions.appendChild(moveBtn);
+    }, 0);
+  };
   window.toggleChecklistGroupCompletion = function(groupId){
     const found = findGroupById(groupId);
     if(!found) return;
