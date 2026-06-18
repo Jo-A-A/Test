@@ -359,7 +359,28 @@ function getSectionAnalytics(subject, type){
   const percentage = total ? Math.round((capped/total)*100) : 0;
   return { rows, total, answered: capped, remaining, percentage };
 }
-
+function getSectionAnalyticsForGroups(subject, groups, type){
+  const rows = groups.map(group => {
+    const total = group.questions.length;
+    const answered = getSubjectProgressEntryForGroup(group);
+    const capped = Math.min(answered, total);
+    const remaining = Math.max(0, total - capped);
+    const percentage = total ? Math.round((capped/total)*100) : 0;
+    return { group, total, answered: capped, remaining, percentage };
+  });
+  const total = rows.reduce((sum, row) => sum + row.total, 0);
+  const uniqueAnsweredIds = new Set();
+  groups.forEach(group => {
+    const key = getGroupProgressKey(group.type || type, subject.name, group.name);
+    const entry = state.progress[key] || { questionIds: [] };
+    (entry.questionIds || []).forEach(id => uniqueAnsweredIds.add(id));
+  });
+  const answered = uniqueAnsweredIds.size;
+  const capped = Math.min(answered, total);
+  const remaining = Math.max(0, total - capped);
+  const percentage = total ? Math.round((capped/total)*100) : 0;
+  return { rows, total, answered: capped, remaining, percentage };
+}
 function openStatisticsPage(){ renderStatisticsPage(); showScreen('statistics-screen'); }
 function closeStatisticsPage(){ goHome(); }
 function renderStatisticsPage(){ renderGlobalStats(); renderSubjectsStatsList(); }
@@ -479,14 +500,32 @@ function renderSubjectStats(){
   }
 
   const sections = [];
-  if(subject.lectures.length && settings.lectures !== false){
-    sections.push(renderSectionAnalyticsCard(subject,'lecture','المحاضرات',t.icons.lectures,getSectionAnalytics(subject,'lecture')));
+  
+  // ترتيب المحاضرات حسب الترتيب المخزن
+  let lectures = subject.lectures || [];
+  if (typeof ensureGroupOrder === 'function') {
+    lectures = ensureGroupOrder(lectures, 'lectures', subject.name);
   }
-  if(subject.years.length && settings.years !== false){
-    sections.push(renderSectionAnalyticsCard(subject,'year','السنوات',t.icons.years,getSectionAnalytics(subject,'year')));
+  if(lectures.length && settings.lectures !== false){
+    sections.push(renderSectionAnalyticsCard(subject,'lecture','المحاضرات',t.icons.lectures,getSectionAnalyticsForGroups(subject, lectures, 'lecture')));
   }
-  if(subject.ai.length && settings.ai !== false){
-    sections.push(renderSectionAnalyticsCard(subject,'ai','الذكاء الصناعي',t.icons.ai,getSectionAnalytics(subject,'ai')));
+  
+  // ترتيب السنوات حسب الترتيب المخزن
+  let years = subject.years || [];
+  if (typeof ensureGroupOrder === 'function') {
+    years = ensureGroupOrder(years, 'years', subject.name);
+  }
+  if(years.length && settings.years !== false){
+    sections.push(renderSectionAnalyticsCard(subject,'year','السنوات',t.icons.years,getSectionAnalyticsForGroups(subject, years, 'year')));
+  }
+  
+  // ترتيب AI حسب الترتيب المخزن
+  let ai = subject.ai || [];
+  if (typeof ensureGroupOrder === 'function') {
+    ai = ensureGroupOrder(ai, 'ai', subject.name);
+  }
+  if(ai.length && settings.ai !== false){
+    sections.push(renderSectionAnalyticsCard(subject,'ai','الذكاء الصناعي',t.icons.ai,getSectionAnalyticsForGroups(subject, ai, 'ai')));
   }
 
   if(el('subject-stats-sections')){
@@ -708,7 +747,6 @@ function renderChecklistSubject(){
   const subject = state.currentSubject;
   if(!subject) return;
   
-  // استخدام الدالة الجديدة لحساب الإحصائيات (تضمن Lectures فقط)
   const stats = calculateLectureChecklistStats(subject);
   
   if(el('checklist-subject-summary')) el('checklist-subject-summary').innerHTML = `
@@ -723,17 +761,23 @@ function renderChecklistSubject(){
         <div class="progress-bar" style="margin-top:12px;"><span style="width:${stats.percentage}%"></span></div>
       </div>`;
   
-  // عرض محاضرات Lectures فقط
   if(el('checklist-subject-lectures')) {
-    // الترتيب: استخدام نفس الترتيب المستخدم في Exams
-    const sectionType = 'lectures';
-    const subjectName = subject.name;
-    const groups = subject.lectures || [];
-    // تطبيق نفس ترتيب Exams على Checklist
-    const orderedGroups = ensureGroupOrder(groups, sectionType, subjectName);
+    let groups = subject.lectures || [];
+    // استخدام نفس ترتيب Exams
+    if (typeof ensureGroupOrder === 'function') {
+      groups = ensureGroupOrder(groups, 'lectures', subject.name);
+    } else {
+      // احتياطي: استخدام الترتيب المخزن يدوياً
+      const key = getGroupOrderKey ? getGroupOrderKey(subject.name, 'lectures') : null;
+      if (key && state.groupPreferences && state.groupPreferences[key]) {
+        const order = state.groupPreferences[key];
+        const rank = new Map(order.map((id, i) => [id, i]));
+        groups = groups.slice().sort((a, b) => (rank.get(a.id) ?? 999) - (rank.get(b.id) ?? 999));
+      }
+    }
     
-    el('checklist-subject-lectures').innerHTML = orderedGroups.length ? 
-      orderedGroups.map(group => { 
+    el('checklist-subject-lectures').innerHTML = groups.length ? 
+      groups.map(group => { 
         const checked = !!state.checklistCompleted[group.id]; 
         const completionClass = checked ? 'completed' : '';
         return `<label class="checklist-lecture-row">
