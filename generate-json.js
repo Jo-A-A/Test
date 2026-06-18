@@ -56,7 +56,6 @@ function resolveCorrectIndex(options, correctAnswer) {
   }
   return -1;
 }
-
 function parseQuestionFile(raw, meta) {
   const text = normalizeText(raw);
   if (!text) return [];
@@ -93,6 +92,7 @@ function parseQuestionFile(raw, meta) {
     let questionText = '';
     let options = [];
     let correctAnswer = '';
+    let correctAnswerLetter = '';
     let explanation = '';
     let batchName = '';
     let pageNumber = '';
@@ -111,6 +111,10 @@ function parseQuestionFile(raw, meta) {
     questionText = before.slice(0, firstOpt).join(' ').trim() || ('Question ' + fallback);
     options = before.slice(firstOpt).filter(l => /^[A-E][\)\.\-]\s*/i.test(l)).map(stripOptionPrefix);
     correctAnswer = lines[ansIdx].replace(/^Correct\s*Answer\s*:\s*/i, '').trim();
+    // استخراج حرف الإجابة الصحيحة (A-E)
+    const letterMatch = correctAnswer.match(/^([A-E])\s*[\)\.\-]\s*/i);
+    if(letterMatch) correctAnswerLetter = letterMatch[1].toUpperCase();
+    else correctAnswerLetter = '';
     let i = ansIdx + 1;
     if (i < lines.length && /^Explanation\s*:/i.test(lines[i])) {
       const exp = [];
@@ -132,11 +136,31 @@ function parseQuestionFile(raw, meta) {
       i++;
     }
     if (!questionNumber) questionNumber = String(fallback);
-    const correctAnswerText = (() => {
-      const idx = resolveCorrectIndex(options, correctAnswer);
-      if (idx >= 0 && options[idx]) return options[idx];
-      return stripOptionPrefix(correctAnswer);
-    })();
+    // تحديد الإجابة الصحيحة باستخدام الحرف أولاً
+    let correctIndex = -1;
+    let correctAnswerText = '';
+    if(correctAnswerLetter){
+      const letterIndex = correctAnswerLetter.charCodeAt(0) - 65;
+      if(letterIndex >= 0 && letterIndex < options.length){
+        correctIndex = letterIndex;
+        correctAnswerText = options[letterIndex];
+      }
+    }
+    if(correctIndex === -1){
+      // فشل في استخدام الحرف، نستخدم الطريقة النصية القديمة
+      const possibleIndex = resolveCorrectIndex(options, correctAnswer);
+      if(possibleIndex >= 0 && options[possibleIndex]){
+        correctIndex = possibleIndex;
+        correctAnswerText = options[possibleIndex];
+      } else {
+        correctAnswerText = stripOptionPrefix(correctAnswer);
+        const fallbackIndex = resolveCorrectIndex(options, correctAnswerText);
+        if(fallbackIndex >= 0 && options[fallbackIndex]){
+          correctIndex = fallbackIndex;
+          correctAnswerText = options[fallbackIndex];
+        }
+      }
+    }
     const id = [slugify(meta.subjectName), slugify(meta.sourceType), slugify(meta.lectureName), slugify(questionNumber), hashString(questionText).slice(0, 10)].join('__');
     questions.push({
       id,
@@ -146,7 +170,8 @@ function parseQuestionFile(raw, meta) {
       originalOptions: options.slice(),
       correctAnswer,
       correctAnswerText,
-      correctIndex: resolveCorrectIndex(options, correctAnswerText),
+      correctIndex,
+      correctAnswerLetter,
       explanation,
       batchName,
       pageNumber,
@@ -161,7 +186,6 @@ function parseQuestionFile(raw, meta) {
   }
   return questions;
 }
-
 function buildGroupFromFile(filePath, subjectName, subjectId, sourceType) {
   const raw = fs.readFileSync(filePath, 'utf8');
   const lectureName = path.basename(filePath, '.txt');
