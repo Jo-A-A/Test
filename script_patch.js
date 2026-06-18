@@ -466,7 +466,7 @@ function moveGroupToBottomByInfo(subjectName, sectionType, groupId){
     if(isDone){
       showDialog({
         title: 'إعادة الدراسة',
-        message: `<div>هل تريد إعادة دراسة <strong>${escapeHtml(found.group.name)}</strong>؟</div><div style="margin-top:8px;color:var(--text-light)">سيتم إزالة التحديد عنها من هنا ومن قسم Exams، وتصفير إحصائياتها.</div>`,
+        message: `<div>هل تريد إعادة دراسة <strong>${escapeHtml(found.group.name)}</strong>؟</div><div style="margin-top:8px;color:var(--text-light)">سيتم إزالة التحديد عنها من هنا ومن قسم Checklist، وتصفير إحصائياتها.</div>`,
         showCancel: true,
         confirmText: 'نعم، أعدها للدراسة',
         cancelText: 'إلغاء',
