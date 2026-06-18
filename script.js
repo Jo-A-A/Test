@@ -763,13 +763,11 @@ function renderChecklistSubject(){
   
   if(el('checklist-subject-lectures')) {
     let groups = subject.lectures || [];
-    // استخدام نفس ترتيب Exams
-    if (typeof ensureGroupOrder === 'function') {
-      groups = ensureGroupOrder(groups, 'lectures', subject.name);
+    if (typeof window.ensureGroupOrder === 'function') {
+      groups = window.ensureGroupOrder(groups, 'lectures', subject.name);
     } else {
-      // احتياطي: استخدام الترتيب المخزن يدوياً
-      const key = getGroupOrderKey ? getGroupOrderKey(subject.name, 'lectures') : null;
-      if (key && state.groupPreferences && state.groupPreferences[key]) {
+      const key = subject.name + '::lectures';
+      if (state.groupPreferences && state.groupPreferences[key]) {
         const order = state.groupPreferences[key];
         const rank = new Map(order.map((id, i) => [id, i]));
         groups = groups.slice().sort((a, b) => (rank.get(a.id) ?? 999) - (rank.get(b.id) ?? 999));
@@ -782,7 +780,7 @@ function renderChecklistSubject(){
         const completionClass = checked ? 'completed' : '';
         return `<label class="checklist-lecture-row">
           <input type="checkbox" ${checked?'checked':''} disabled>
-          <span class="checklist-lecture-name ${completionClass}" style="cursor:pointer;" onclick="showChecklistLectureConfirmation('${group.id}')">${escapeHtml(group.name)}</span>
+          <span class="checklist-lecture-name ${completionClass}" style="cursor:pointer;" onclick="window.toggleChecklistLecture('${group.id}')">${escapeHtml(group.name)}</span>
           <span class="checklist-lecture-count">${group.questions.length} سؤال</span>
         </label>`;
       }).join('') : 
@@ -812,96 +810,6 @@ function toggleChecklistLecture(groupId){
   
   saveChecklistStore(); 
   renderChecklistSubject();
-}
-function showChecklistLectureConfirmation(groupId) {
-  const subject = state.currentSubject;
-  if (!subject) return;
-
-  const lecture = (subject.lectures || []).find(g => g.id === groupId);
-  if (!lecture) return;
-
-  // استدعاء setGroupCompleted مع الخيارات المناسبة
-  // استخدام removeDialogExtras للتأكد من عدم تراكم الأزرار
-  const isDone = !!state.checklistCompleted[groupId];
-
-  if (isDone) {
-    showDialog({
-      title: 'إعادة الدراسة',
-      message: `<div>هل تريد إعادة دراسة <strong>${escapeHtml(lecture.name)}</strong>؟</div><div style="margin-top:8px;color:var(--text-light)">سيتم إزالة التحديد عنها من هنا ومن قسم Exams، وتصفير إحصائياتها.</div>`,
-      showCancel: true,
-      confirmText: 'نعم، أعدها للدراسة',
-      cancelText: 'إلغاء',
-      onConfirm: () => {
-        setGroupCompleted(groupId, false, { resetProgress: true });
-        showToast('تمت إزالة التحديد وتصفير إحصائيات المحاضرة.', 'success');
-      },
-      onCancel: () => {}
-    });
-    return;
-  }
-
-  showDialog({
-    title: 'تأكيد الإنجاز',
-    message: `<div>هل أتممت <strong>${escapeHtml(lecture.name)}</strong> بالفعل؟</div>`,
-    showCancel: true,
-    confirmText: 'نعم',
-    cancelText: 'إلغاء',
-    onConfirm: () => {
-      setGroupCompleted(groupId, true, { moveBottom: false, countAsAnswered: true });
-      showToast('تم تعليم المحاضرة كمكتملة.', 'success');
-    },
-    onCancel: () => {}
-  });
-
-  // إضافة زر "نعم ونقلها للأسفل" مع ضمان عدم التكرار
-  setTimeout(() => {
-    const actions = document.querySelector('#dialog-overlay .dialog-actions');
-    if (!actions) return;
-
-    // إزالة أي أزرار إضافية سابقة (باستثناء الأزرار الأساسية)
-    actions.querySelectorAll('.dialog-extra-btn').forEach(btn => btn.remove());
-
-    const confirmBtn = document.getElementById('dialog-confirm');
-    const cancelBtn = document.getElementById('dialog-cancel');
-    if (!confirmBtn || !cancelBtn) return;
-
-    // التأكد من أن confirmBtn و cancelBtn موجودين بالترتيب الصحيح
-    // نعيد تنظيم الأزرار بشكل نظيف
-    // إزالة جميع الأزرار الحالية
-    while (actions.firstChild) {
-      actions.removeChild(actions.firstChild);
-    }
-
-    // إضافة زر "نعم" (confirm)
-    confirmBtn.textContent = 'نعم';
-    confirmBtn.className = 'btn-primary';
-    confirmBtn.onclick = () => {
-      hideDialog();
-      setGroupCompleted(groupId, true, { moveBottom: false, countAsAnswered: true });
-      showToast('تم تعليم المحاضرة كمكتملة.', 'success');
-    };
-    actions.appendChild(confirmBtn);
-
-    // إضافة زر "نعم ونقلها للأسفل"
-    const moveBtn = document.createElement('button');
-    moveBtn.className = 'btn-primary dialog-extra-btn';
-    moveBtn.textContent = 'نعم ونقلها للأسفل';
-    moveBtn.onclick = () => {
-      hideDialog();
-      setGroupCompleted(groupId, true, { moveBottom: true, countAsAnswered: true });
-      showToast('تم تعليم المحاضرة كمكتملة ونقلها للأسفل.', 'success');
-    };
-    actions.appendChild(moveBtn);
-
-    // إضافة زر "إلغاء"
-    cancelBtn.textContent = 'إلغاء';
-    cancelBtn.className = 'btn-secondary';
-    cancelBtn.onclick = () => {
-      hideDialog();
-    };
-    actions.appendChild(cancelBtn);
-
-  }, 0);
 }
 function openSubject(subjectId){ state.currentSubject=state.displayedSubjects.find(s=>s.id===subjectId) || state.subjects.find(s=>s.id===subjectId) || null; if(!state.currentSubject){ showToast('المادة غير موجودة.','error'); return; } const t=theme(); el('subject-sections-title').textContent=state.currentSubject.name; el('subject-sections-summary').innerHTML=`<div class="subject-summary-grid"><div><span>${t.icons.lectures} المحاضرات</span><strong>${state.currentSubject.lectures.length}</strong></div><div><span>${t.icons.years} Years</span><strong>${state.currentSubject.years.length}</strong></div><div><span>${t.icons.ai} AI</span><strong>${state.currentSubject.ai.length}</strong></div><div><span>${t.icons.progress} إجمالي الأسئلة</span><strong>${state.currentSubject.totalQuestions}</strong></div></div>`; const cards=[]; if(state.currentSubject.lectures.length) cards.push(buildCategoryCard('lectures','Lectures','Lectures',state.currentSubject.lectures.length,countQuestions(state.currentSubject.lectures),true)); if(state.currentSubject.years.length) cards.push(buildCategoryCard('years','Years','Years',state.currentSubject.years.length,countQuestions(state.currentSubject.years),true)); if(state.currentSubject.ai.length || (state.browseMode==='all' && state.currentSubject.hasAiFolder)) cards.push(buildCategoryCard('ai','AI','AI',state.currentSubject.ai.length,countQuestions(state.currentSubject.ai),state.currentSubject.ai.length>0 || (state.browseMode==='all' && state.currentSubject.hasAiFolder))); el('subject-categories').innerHTML=cards.join('') || '<div class="empty-state"><div class="empty-icon">📭</div><p>لا توجد ملفات TXT بعد داخل هذه المادة.</p></div>'; showScreen('subject-sections-screen'); }
 function countQuestions(groups){ return groups.reduce((sum,g)=>sum+g.questions.length,0); }
