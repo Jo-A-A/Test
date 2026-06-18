@@ -729,17 +729,17 @@ function renderChecklist(){
   const subjects = sortSubjects(state.subjects);
   if(!subjects.length){ container.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><p>لا توجد مواد بعد.</p></div>'; return; }
   container.innerHTML = subjects.map(subject => {
-    const checklistStats = calculateLectureChecklistStats(subject);
-    return `
-      <div class="selection-item checklist-subject-tile" onclick="openChecklistSubject('${subject.id}')">
-        <div>
-          <div class="checklist-subject-tile-title">${escapeHtml(subject.name)}</div>
-          <small style="color:var(--text-light)">الإجمالي ${checklistStats.total} · المنجز ${checklistStats.completed} · المتبقي ${checklistStats.remaining}</small>
-        </div>
-        <div class="checklist-subject-tile-arrow">‹</div>
+  const checklistStats = calculateLectureChecklistStats(subject);
+  return `
+    <div class="selection-item checklist-subject-tile" onclick="openSubject('${subject.id}')">
+      <div>
+        <div class="checklist-subject-tile-title">${escapeHtml(subject.name)}</div>
+        <small style="color:var(--text-light)">الإجمالي ${checklistStats.total} · المنجز ${checklistStats.completed} · المتبقي ${checklistStats.remaining}</small>
       </div>
-    `;
-  }).join('');
+      <div class="checklist-subject-tile-arrow">‹</div>
+    </div>
+  `;
+}).join('');
 }
 function openChecklistSubject(subjectId){ const subject = state.subjects.find(s => s.id === subjectId); if(!subject) return; state.currentSubject = subject; if(el('checklist-subject-title')) el('checklist-subject-title').textContent = subject.name; renderChecklistSubject(); showScreen('checklist-subject-screen'); }
 function closeChecklistSubject(){ state.currentSubject = null; renderChecklist(); showScreen('checklist-screen'); }
