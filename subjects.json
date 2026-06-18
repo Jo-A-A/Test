@@ -1,5 +1,428 @@
 [
   {
+    "id": "internal",
+    "name": "Internal",
+    "lectures": [
+      {
+        "id": "internal__lecture__pancreatitis",
+        "name": "Pancreatitis",
+        "type": "lecture",
+        "subjectName": "Internal",
+        "path": "Internal/Pancreatitis.txt",
+        "questions": [
+          {
+            "id": "internal__lecture__pancreatitis__17__ed6ezh",
+            "number": "17",
+            "text": "Which of the following is NOT a typical etiology of chronic pancreatitis?",
+            "options": [
+              "Gallstones",
+              "Chronic alcohol abuse",
+              "Cystic fibrosis",
+              "Hereditary pancreatitis",
+              "Autoimmune pancreatitis"
+            ],
+            "originalOptions": [
+              "Gallstones",
+              "Chronic alcohol abuse",
+              "Cystic fibrosis",
+              "Hereditary pancreatitis",
+              "Autoimmune pancreatitis"
+            ],
+            "correctAnswer": "A) Gallstones",
+            "correctAnswerText": "Gallstones",
+            "correctIndex": 0,
+            "correctAnswerLetter": "A",
+            "explanation": "Gallstones are the leading cause of acute pancreatitis but are rarely a primary cause of chronic pancreatitis, which is most commonly caused by alcohol abuse.",
+            "batchName": "Vagus - 5",
+            "pageNumber": "P(136)",
+            "subjectName": "Internal",
+            "subjectId": "internal",
+            "lectureName": "Pancreatitis",
+            "groupName": "Pancreatitis",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "internal__lecture__pancreatitis__60__gyqqta",
+            "number": "60",
+            "text": "A patient presents with acute abdominal pain. Serum amylase is elevated. Which of the following conditions is associated with an elevated amylase but typically normal serum lipase?",
+            "options": [
+              "Acute Pancreatitis",
+              "Parotitis (Mumps)",
+              "Intestinal ischemia",
+              "Perforated peptic ulcer",
+              "Pancreatic pseudocyst"
+            ],
+            "originalOptions": [
+              "Acute Pancreatitis",
+              "Parotitis (Mumps)",
+              "Intestinal ischemia",
+              "Perforated peptic ulcer",
+              "Pancreatic pseudocyst"
+            ],
+            "correctAnswer": "B) Parotitis (Mumps)",
+            "correctAnswerText": "Parotitis (Mumps)",
+            "correctIndex": 1,
+            "correctAnswerLetter": "B",
+            "explanation": "Amylase is produced by both the pancreas and salivary glands. Parotitis causes isolated hyperamylasemia (salivary origin). Lipase is specific to the pancreas and remains normal in salivary gland pathology.",
+            "batchName": "Endorphin - 5",
+            "pageNumber": "P(47)",
+            "subjectName": "Internal",
+            "subjectId": "internal",
+            "lectureName": "Pancreatitis",
+            "groupName": "Pancreatitis",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "internal__lecture__pancreatitis__15__jbiwhd",
+            "number": "15",
+            "text": "Which of the following is NOT a recognized complication of acute pancreatitis?",
+            "options": [
+              "Hypercalcemia",
+              "Pseudocyst formation",
+              "Acute Respiratory Distress Syndrome (ARDS)",
+              "Hypocalcemia",
+              "Renal failure"
+            ],
+            "originalOptions": [
+              "Hypercalcemia",
+              "Pseudocyst formation",
+              "Acute Respiratory Distress Syndrome (ARDS)",
+              "Hypocalcemia",
+              "Renal failure"
+            ],
+            "correctAnswer": "A) Hypercalcemia",
+            "correctAnswerText": "Hypercalcemia",
+            "correctIndex": 0,
+            "correctAnswerLetter": "A",
+            "explanation": "Hypocalcemia is a complication of pancreatitis (due to fat saponification). Hypercalcemia is a potential cause of pancreatitis, not a result.",
+            "batchName": "Vagus - 5",
+            "pageNumber": "P(135)",
+            "subjectName": "Internal",
+            "subjectId": "internal",
+            "lectureName": "Pancreatitis",
+            "groupName": "Pancreatitis",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "internal__lecture__pancreatitis__10__ftxdl",
+            "number": "10",
+            "text": "All of the following are recognized causes of acute pancreatitis EXCEPT:",
+            "options": [
+              "Chronic alcohol consumption",
+              "Hypocalcemia",
+              "Cholelithiasis (gallstones)",
+              "Thiazide diuretics",
+              "Mumps virus infection"
+            ],
+            "originalOptions": [
+              "Chronic alcohol consumption",
+              "Hypocalcemia",
+              "Cholelithiasis (gallstones)",
+              "Thiazide diuretics",
+              "Mumps virus infection"
+            ],
+            "correctAnswer": "B) Hypocalcemia",
+            "correctAnswerText": "Hypocalcemia",
+            "correctIndex": 1,
+            "correctAnswerLetter": "B",
+            "explanation": "Hypercalcemia, not hypocalcemia, is a metabolic cause of acute pancreatitis. Hypocalcemia is a potential complication of severe acute pancreatitis due to saponification of fats in the peritoneum.",
+            "batchName": "Aorta - 5",
+            "pageNumber": "P(66)",
+            "subjectName": "Internal",
+            "subjectId": "internal",
+            "lectureName": "Pancreatitis",
+            "groupName": "Pancreatitis",
+            "sourceType": "lecture"
+          }
+        ]
+      }
+    ],
+    "ai": [],
+    "years": [
+      {
+        "id": "internal__year__aorta-5",
+        "name": "Aorta - 5",
+        "type": "year",
+        "subjectName": "Internal",
+        "questions": [
+          {
+            "id": "internal__lecture__pancreatitis__10__ftxdl",
+            "number": "10",
+            "text": "All of the following are recognized causes of acute pancreatitis EXCEPT:",
+            "options": [
+              "Chronic alcohol consumption",
+              "Hypocalcemia",
+              "Cholelithiasis (gallstones)",
+              "Thiazide diuretics",
+              "Mumps virus infection"
+            ],
+            "originalOptions": [
+              "Chronic alcohol consumption",
+              "Hypocalcemia",
+              "Cholelithiasis (gallstones)",
+              "Thiazide diuretics",
+              "Mumps virus infection"
+            ],
+            "correctAnswer": "B) Hypocalcemia",
+            "correctAnswerText": "Hypocalcemia",
+            "correctIndex": 1,
+            "correctAnswerLetter": "B",
+            "explanation": "Hypercalcemia, not hypocalcemia, is a metabolic cause of acute pancreatitis. Hypocalcemia is a potential complication of severe acute pancreatitis due to saponification of fats in the peritoneum.",
+            "batchName": "Aorta - 5",
+            "pageNumber": "P(66)",
+            "subjectName": "Internal",
+            "subjectId": "internal",
+            "lectureName": "Pancreatitis",
+            "groupName": "Pancreatitis",
+            "sourceType": "year",
+            "originalSourceType": "lecture"
+          }
+        ]
+      },
+      {
+        "id": "internal__year__endorphin-5",
+        "name": "Endorphin - 5",
+        "type": "year",
+        "subjectName": "Internal",
+        "questions": [
+          {
+            "id": "internal__lecture__pancreatitis__60__gyqqta",
+            "number": "60",
+            "text": "A patient presents with acute abdominal pain. Serum amylase is elevated. Which of the following conditions is associated with an elevated amylase but typically normal serum lipase?",
+            "options": [
+              "Acute Pancreatitis",
+              "Parotitis (Mumps)",
+              "Intestinal ischemia",
+              "Perforated peptic ulcer",
+              "Pancreatic pseudocyst"
+            ],
+            "originalOptions": [
+              "Acute Pancreatitis",
+              "Parotitis (Mumps)",
+              "Intestinal ischemia",
+              "Perforated peptic ulcer",
+              "Pancreatic pseudocyst"
+            ],
+            "correctAnswer": "B) Parotitis (Mumps)",
+            "correctAnswerText": "Parotitis (Mumps)",
+            "correctIndex": 1,
+            "correctAnswerLetter": "B",
+            "explanation": "Amylase is produced by both the pancreas and salivary glands. Parotitis causes isolated hyperamylasemia (salivary origin). Lipase is specific to the pancreas and remains normal in salivary gland pathology.",
+            "batchName": "Endorphin - 5",
+            "pageNumber": "P(47)",
+            "subjectName": "Internal",
+            "subjectId": "internal",
+            "lectureName": "Pancreatitis",
+            "groupName": "Pancreatitis",
+            "sourceType": "year",
+            "originalSourceType": "lecture"
+          }
+        ]
+      },
+      {
+        "id": "internal__year__vagus-5",
+        "name": "Vagus - 5",
+        "type": "year",
+        "subjectName": "Internal",
+        "questions": [
+          {
+            "id": "internal__lecture__pancreatitis__17__ed6ezh",
+            "number": "17",
+            "text": "Which of the following is NOT a typical etiology of chronic pancreatitis?",
+            "options": [
+              "Gallstones",
+              "Chronic alcohol abuse",
+              "Cystic fibrosis",
+              "Hereditary pancreatitis",
+              "Autoimmune pancreatitis"
+            ],
+            "originalOptions": [
+              "Gallstones",
+              "Chronic alcohol abuse",
+              "Cystic fibrosis",
+              "Hereditary pancreatitis",
+              "Autoimmune pancreatitis"
+            ],
+            "correctAnswer": "A) Gallstones",
+            "correctAnswerText": "Gallstones",
+            "correctIndex": 0,
+            "correctAnswerLetter": "A",
+            "explanation": "Gallstones are the leading cause of acute pancreatitis but are rarely a primary cause of chronic pancreatitis, which is most commonly caused by alcohol abuse.",
+            "batchName": "Vagus - 5",
+            "pageNumber": "P(136)",
+            "subjectName": "Internal",
+            "subjectId": "internal",
+            "lectureName": "Pancreatitis",
+            "groupName": "Pancreatitis",
+            "sourceType": "year",
+            "originalSourceType": "lecture"
+          },
+          {
+            "id": "internal__lecture__pancreatitis__15__jbiwhd",
+            "number": "15",
+            "text": "Which of the following is NOT a recognized complication of acute pancreatitis?",
+            "options": [
+              "Hypercalcemia",
+              "Pseudocyst formation",
+              "Acute Respiratory Distress Syndrome (ARDS)",
+              "Hypocalcemia",
+              "Renal failure"
+            ],
+            "originalOptions": [
+              "Hypercalcemia",
+              "Pseudocyst formation",
+              "Acute Respiratory Distress Syndrome (ARDS)",
+              "Hypocalcemia",
+              "Renal failure"
+            ],
+            "correctAnswer": "A) Hypercalcemia",
+            "correctAnswerText": "Hypercalcemia",
+            "correctIndex": 0,
+            "correctAnswerLetter": "A",
+            "explanation": "Hypocalcemia is a complication of pancreatitis (due to fat saponification). Hypercalcemia is a potential cause of pancreatitis, not a result.",
+            "batchName": "Vagus - 5",
+            "pageNumber": "P(135)",
+            "subjectName": "Internal",
+            "subjectId": "internal",
+            "lectureName": "Pancreatitis",
+            "groupName": "Pancreatitis",
+            "sourceType": "year",
+            "originalSourceType": "lecture"
+          }
+        ]
+      }
+    ],
+    "allQuestions": [
+      {
+        "id": "internal__lecture__pancreatitis__17__ed6ezh",
+        "number": "17",
+        "text": "Which of the following is NOT a typical etiology of chronic pancreatitis?",
+        "options": [
+          "Gallstones",
+          "Chronic alcohol abuse",
+          "Cystic fibrosis",
+          "Hereditary pancreatitis",
+          "Autoimmune pancreatitis"
+        ],
+        "originalOptions": [
+          "Gallstones",
+          "Chronic alcohol abuse",
+          "Cystic fibrosis",
+          "Hereditary pancreatitis",
+          "Autoimmune pancreatitis"
+        ],
+        "correctAnswer": "A) Gallstones",
+        "correctAnswerText": "Gallstones",
+        "correctIndex": 0,
+        "correctAnswerLetter": "A",
+        "explanation": "Gallstones are the leading cause of acute pancreatitis but are rarely a primary cause of chronic pancreatitis, which is most commonly caused by alcohol abuse.",
+        "batchName": "Vagus - 5",
+        "pageNumber": "P(136)",
+        "subjectName": "Internal",
+        "subjectId": "internal",
+        "lectureName": "Pancreatitis",
+        "groupName": "Pancreatitis",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "internal__lecture__pancreatitis__60__gyqqta",
+        "number": "60",
+        "text": "A patient presents with acute abdominal pain. Serum amylase is elevated. Which of the following conditions is associated with an elevated amylase but typically normal serum lipase?",
+        "options": [
+          "Acute Pancreatitis",
+          "Parotitis (Mumps)",
+          "Intestinal ischemia",
+          "Perforated peptic ulcer",
+          "Pancreatic pseudocyst"
+        ],
+        "originalOptions": [
+          "Acute Pancreatitis",
+          "Parotitis (Mumps)",
+          "Intestinal ischemia",
+          "Perforated peptic ulcer",
+          "Pancreatic pseudocyst"
+        ],
+        "correctAnswer": "B) Parotitis (Mumps)",
+        "correctAnswerText": "Parotitis (Mumps)",
+        "correctIndex": 1,
+        "correctAnswerLetter": "B",
+        "explanation": "Amylase is produced by both the pancreas and salivary glands. Parotitis causes isolated hyperamylasemia (salivary origin). Lipase is specific to the pancreas and remains normal in salivary gland pathology.",
+        "batchName": "Endorphin - 5",
+        "pageNumber": "P(47)",
+        "subjectName": "Internal",
+        "subjectId": "internal",
+        "lectureName": "Pancreatitis",
+        "groupName": "Pancreatitis",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "internal__lecture__pancreatitis__15__jbiwhd",
+        "number": "15",
+        "text": "Which of the following is NOT a recognized complication of acute pancreatitis?",
+        "options": [
+          "Hypercalcemia",
+          "Pseudocyst formation",
+          "Acute Respiratory Distress Syndrome (ARDS)",
+          "Hypocalcemia",
+          "Renal failure"
+        ],
+        "originalOptions": [
+          "Hypercalcemia",
+          "Pseudocyst formation",
+          "Acute Respiratory Distress Syndrome (ARDS)",
+          "Hypocalcemia",
+          "Renal failure"
+        ],
+        "correctAnswer": "A) Hypercalcemia",
+        "correctAnswerText": "Hypercalcemia",
+        "correctIndex": 0,
+        "correctAnswerLetter": "A",
+        "explanation": "Hypocalcemia is a complication of pancreatitis (due to fat saponification). Hypercalcemia is a potential cause of pancreatitis, not a result.",
+        "batchName": "Vagus - 5",
+        "pageNumber": "P(135)",
+        "subjectName": "Internal",
+        "subjectId": "internal",
+        "lectureName": "Pancreatitis",
+        "groupName": "Pancreatitis",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "internal__lecture__pancreatitis__10__ftxdl",
+        "number": "10",
+        "text": "All of the following are recognized causes of acute pancreatitis EXCEPT:",
+        "options": [
+          "Chronic alcohol consumption",
+          "Hypocalcemia",
+          "Cholelithiasis (gallstones)",
+          "Thiazide diuretics",
+          "Mumps virus infection"
+        ],
+        "originalOptions": [
+          "Chronic alcohol consumption",
+          "Hypocalcemia",
+          "Cholelithiasis (gallstones)",
+          "Thiazide diuretics",
+          "Mumps virus infection"
+        ],
+        "correctAnswer": "B) Hypocalcemia",
+        "correctAnswerText": "Hypocalcemia",
+        "correctIndex": 1,
+        "correctAnswerLetter": "B",
+        "explanation": "Hypercalcemia, not hypocalcemia, is a metabolic cause of acute pancreatitis. Hypocalcemia is a potential complication of severe acute pancreatitis due to saponification of fats in the peritoneum.",
+        "batchName": "Aorta - 5",
+        "pageNumber": "P(66)",
+        "subjectName": "Internal",
+        "subjectId": "internal",
+        "lectureName": "Pancreatitis",
+        "groupName": "Pancreatitis",
+        "sourceType": "lecture"
+      }
+    ],
+    "totalQuestions": 4,
+    "totalLectures": 4,
+    "hasAiFolder": false
+  },
+  {
     "id": "neurosurgery",
     "name": "Neurosurgery",
     "lectures": [
