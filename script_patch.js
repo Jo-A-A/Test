@@ -341,7 +341,7 @@ function moveGroupToBottomByInfo(subjectName, sectionType, groupId){
     if(isDone){
       showDialog({
         title:'إعادة الدراسة',
-        message:`<div>هل تريد إعادة دراسة <strong>${escapeHtml(group.name)}</strong>؟</div><div style="margin-top:8px;color:var(--text-light)">سيتم إزالة التحديد عنها من هنا ومن قسم Exams، وتصفير إحصائياتها.</div>`,
+        message:`<div>هل تريد إعادة دراسة <strong>${escapeHtml(group.name)}</strong>؟</div><div style="margin-top:8px;color:var(--text-light)">سيتم إزالة التحديد عنها من هنا ومن قسم Checklist، وتصفير إحصائياتها.</div>`,
         showCancel:true,
         confirmText:'نعم، أعدها للدراسة',
         cancelText:'إلغاء',
@@ -370,19 +370,16 @@ function moveGroupToBottomByInfo(subjectName, sectionType, groupId){
       const actions = document.querySelector('#dialog-overlay .dialog-actions');
       if(!actions) return;
       
-      // إزالة أي أزرار إضافية سابقة
       actions.querySelectorAll('.dialog-extra-btn').forEach(btn => btn.remove());
 
       const confirmBtn = document.getElementById('dialog-confirm');
       const cancelBtn = document.getElementById('dialog-cancel');
       if (!confirmBtn || !cancelBtn) return;
 
-      // إعادة تنظيم الأزرار بشكل نظيف
       while (actions.firstChild) {
         actions.removeChild(actions.firstChild);
       }
 
-      // زر "نعم"
       confirmBtn.textContent = 'نعم';
       confirmBtn.className = 'btn-primary';
       confirmBtn.onclick = () => {
@@ -392,7 +389,6 @@ function moveGroupToBottomByInfo(subjectName, sectionType, groupId){
       };
       actions.appendChild(confirmBtn);
 
-      // زر "نعم ونقلها للأسفل"
       const moveBtn = document.createElement('button');
       moveBtn.className = 'btn-primary dialog-extra-btn';
       moveBtn.textContent = 'نعم ونقلها للأسفل';
@@ -417,7 +413,6 @@ function moveGroupToBottomByInfo(subjectName, sectionType, groupId){
       };
       actions.appendChild(moveBtn);
 
-      // زر "إلغاء"
       cancelBtn.textContent = 'إلغاء';
       cancelBtn.className = 'btn-secondary';
       cancelBtn.onclick = () => {
@@ -460,7 +455,6 @@ function moveGroupToBottomByInfo(subjectName, sectionType, groupId){
     const found = findGroupById(groupId);
     if(!found) return;
 
-    // التأكد من أن العنصر من نوع Lecture فقط
     if(found.sectionType !== 'lectures'){
       showToast('يمكن تعليم المحاضرات فقط في هذا القسم.', 'error');
       return;
@@ -471,25 +465,74 @@ function moveGroupToBottomByInfo(subjectName, sectionType, groupId){
 
     if(isDone){
       showDialog({
-        title:'إعادة الدراسة',
-        message:'هل تريد إعادة هذه المحاضرة لوضع الدراسة ؟',
-        showCancel:true,
-        confirmText:'نعم',
-        cancelText:'لا',
-        onConfirm:()=>{
-          setGroupCompleted(groupId, false, { resetProgress:true });
-          showToast('تمت إعادة المحاضرة لوضع الدراسة.', 'success');
+        title: 'إعادة الدراسة',
+        message: `<div>هل تريد إعادة دراسة <strong>${escapeHtml(found.group.name)}</strong>؟</div><div style="margin-top:8px;color:var(--text-light)">سيتم إزالة التحديد عنها من هنا ومن قسم Exams، وتصفير إحصائياتها.</div>`,
+        showCancel: true,
+        confirmText: 'نعم، أعدها للدراسة',
+        cancelText: 'إلغاء',
+        onConfirm: () => {
+          setGroupCompleted(groupId, false, { resetProgress: true });
+          showToast('تمت إزالة التحديد وتصفير إحصائيات المحاضرة.', 'success');
         },
-        onCancel:()=>{
-          if(typeof renderChecklist === 'function') renderChecklist();
-          if(typeof renderChecklistSubject === 'function' && el('checklist-subject-screen') && el('checklist-subject-screen').classList.contains('active')) renderChecklistSubject();
-        }
+        onCancel: () => {}
       });
       return;
     }
 
-    setGroupCompleted(groupId, true, { moveBottom:false, countAsAnswered:true });
-    showToast('تم تعليم المحاضرة كمكتملة.', 'success');
+    showDialog({
+      title: 'تأكيد الإنجاز',
+      message: `<div>هل أتممت <strong>${escapeHtml(found.group.name)}</strong> بالفعل؟</div>`,
+      showCancel: true,
+      confirmText: 'نعم',
+      cancelText: 'إلغاء',
+      onConfirm: () => {
+        setGroupCompleted(groupId, true, { moveBottom: false, countAsAnswered: true });
+        showToast('تم تعليم المحاضرة كمكتملة.', 'success');
+      },
+      onCancel: () => {}
+    });
+
+    setTimeout(() => {
+      const actions = document.querySelector('#dialog-overlay .dialog-actions');
+      if(!actions) return;
+
+      actions.querySelectorAll('.dialog-extra-btn').forEach(btn => btn.remove());
+
+      const confirmBtn = document.getElementById('dialog-confirm');
+      const cancelBtn = document.getElementById('dialog-cancel');
+      if(!confirmBtn || !cancelBtn) return;
+
+      while(actions.firstChild) {
+        actions.removeChild(actions.firstChild);
+      }
+
+      confirmBtn.textContent = 'نعم';
+      confirmBtn.className = 'btn-primary';
+      confirmBtn.onclick = () => {
+        hideDialog();
+        setGroupCompleted(groupId, true, { moveBottom: false, countAsAnswered: true });
+        showToast('تم تعليم المحاضرة كمكتملة.', 'success');
+      };
+      actions.appendChild(confirmBtn);
+
+      const moveBtn = document.createElement('button');
+      moveBtn.className = 'btn-primary dialog-extra-btn';
+      moveBtn.textContent = 'نعم ونقلها للأسفل';
+      moveBtn.onclick = () => {
+        hideDialog();
+        setGroupCompleted(groupId, true, { moveBottom: true, countAsAnswered: true });
+        showToast('تم تعليم المحاضرة كمكتملة ونقلها للأسفل.', 'success');
+      };
+      actions.appendChild(moveBtn);
+
+      cancelBtn.textContent = 'إلغاء';
+      cancelBtn.className = 'btn-secondary';
+      cancelBtn.onclick = () => {
+        hideDialog();
+      };
+      actions.appendChild(cancelBtn);
+
+    }, 0);
   };
   function ensureSelectionBulkToolbar(){
     let toolbar = el('selection-bulk-toolbar');
@@ -773,6 +816,7 @@ function ensureGroupOrder(groups, sectionType, subjectName){
   const rank = new Map(clean.map((id,i)=>[id,i]));
   return groups.slice().sort((a,b)=>(rank.get(a.id) ?? 1e9) - (rank.get(b.id) ?? 1e9));
 }
+  window.ensureGroupOrder = ensureGroupOrder;
   getSubjectTotalQuestions = function(subject, options = {}){
     const { scope = 'overview', respectVisibilitySettings = false } = options;
 
@@ -857,20 +901,29 @@ function ensureGroupOrder(groups, sectionType, subjectName){
     }
 
     const sections = [];
-  if(subject.lectures.length && settings.lectures !== false){
-    sections.push(renderSectionAnalyticsCard(subject,'lecture','المحاضرات',t.icons.lectures,getSectionAnalytics(subject,'lecture')));
-  }
-  if(subject.years.length && settings.years !== false){
-    sections.push(renderSectionAnalyticsCard(subject,'year','السنوات',t.icons.years,getSectionAnalytics(subject,'year')));
-  }
-  if(subject.ai.length && settings.ai !== false){
-    sections.push(renderSectionAnalyticsCard(subject,'ai','الذكاء الصناعي',t.icons.ai,getSectionAnalytics(subject,'ai')));
-  }
 
-  if(el('subject-stats-sections')){
-    el('subject-stats-sections').innerHTML = sections.length ? sections.join('') : '<div class="empty-state"><p>لا توجد أقسام مرئية لهذه المادة حالياً.</p></div>';
-  }
-};
+    let lectures = subject.lectures || [];
+    if(typeof window.ensureGroupOrder === 'function') lectures = window.ensureGroupOrder(lectures, 'lectures', subject.name);
+    if(lectures.length && settings.lectures !== false){
+      sections.push(renderSectionAnalyticsCard(subject,'lecture','المحاضرات',t.icons.lectures,getSectionAnalyticsForGroups(subject, lectures, 'lecture')));
+    }
+
+    let years = subject.years || [];
+    if(typeof window.ensureGroupOrder === 'function') years = window.ensureGroupOrder(years, 'years', subject.name);
+    if(years.length && settings.years !== false){
+      sections.push(renderSectionAnalyticsCard(subject,'year','السنوات',t.icons.years,getSectionAnalyticsForGroups(subject, years, 'year')));
+    }
+
+    let ai = subject.ai || [];
+    if(typeof window.ensureGroupOrder === 'function') ai = window.ensureGroupOrder(ai, 'ai', subject.name);
+    if(ai.length && settings.ai !== false){
+      sections.push(renderSectionAnalyticsCard(subject,'ai','الذكاء الصناعي',t.icons.ai,getSectionAnalyticsForGroups(subject, ai, 'ai')));
+    }
+
+    if(el('subject-stats-sections')){
+      el('subject-stats-sections').innerHTML = sections.length ? sections.join('') : '<div class="empty-state"><p>لا توجد أقسام مرئية لهذه المادة حالياً.</p></div>';
+    }
+  };
     const __origSaveProgressForAutoComplete = typeof saveProgress === 'function' ? saveProgress : null;
   saveProgress = function(){
     if(__origSaveProgressForAutoComplete) __origSaveProgressForAutoComplete();
