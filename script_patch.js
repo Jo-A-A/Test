@@ -175,19 +175,22 @@ function moveGroupToBottomByInfo(subjectName, sectionType, groupId){
   }
 
     function rerenderAfterChecklistRelatedChange(){
-    try{ syncAutoCompletedLectures(); }catch(e){}
-    try{ saveChecklistStore(); }catch(e){}
-    try{ saveProgressStore(); }catch(e){}
-    try{ saveGroupPreferences(); }catch(e){}
-    if(typeof renderChecklist === 'function') renderChecklist();
-    if(typeof renderChecklistSubject === 'function' && el('checklist-subject-screen') && el('checklist-subject-screen').classList.contains('active')) renderChecklistSubject();
-    if(typeof renderSubjects === 'function' && state.browseMode === 'all') renderSubjects();
-    if(typeof renderSelectionScreenWithEnhancements === 'function' && el('selection-screen') && el('selection-screen').classList.contains('active')){
-      renderSelectionScreenWithEnhancements();
-    }
-    if(typeof updateStatisticsIfOpen === 'function') updateStatisticsIfOpen();
-    if(typeof renderMemories === 'function') renderMemories();
+  try{ syncAutoCompletedLectures(); }catch(e){}
+  try{ saveChecklistStore(); }catch(e){}
+  try{ saveProgressStore(); }catch(e){}
+  try{ saveGroupPreferences(); }catch(e){}
+  if(typeof renderChecklist === 'function') renderChecklist();
+  if(typeof renderChecklistSubject === 'function' && el('checklist-subject-screen') && el('checklist-subject-screen').classList.contains('active')) renderChecklistSubject();
+  if(typeof renderSubjects === 'function' && state.browseMode === 'all') renderSubjects();
+  if(typeof renderSelectionScreenWithEnhancements === 'function' && el('selection-screen') && el('selection-screen').classList.contains('active')){
+    renderSelectionScreenWithEnhancements();
   }
+  if(typeof updateStatisticsIfOpen === 'function') updateStatisticsIfOpen();
+  if(typeof renderMemories === 'function') renderMemories();
+  if (el('subject-sections-screen') && el('subject-sections-screen').classList.contains('active') && state.currentSubject) {
+    openSubject(state.currentSubject.id);
+  }
+    }
    function syncAutoCompletedLectures(){
     let changed = false;
 
