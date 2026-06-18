@@ -96,7 +96,15 @@ function getCorrectAnswerText(q){
 }
 function getSubjectColor(subjectName){ const darkPalette=['#93c5fd','#86efac','#fcd34d','#c4b5fd','#fda4af','#67e8f9','#fdba74','#f9a8d4']; const lightPalette=['#1d4ed8','#15803d','#b45309','#7c3aed','#be123c','#0f766e','#9a3412','#9d174d']; const palette=isDarkTheme()?darkPalette:lightPalette; const subjects=sortSubjects(state.subjects).map(s=>s.name); const idx=Math.max(0, subjects.indexOf(subjectName)) % palette.length; return palette[idx]; }
 function formatHistorySubLabel(item){ if(!item || !item.groups || !item.groups.length) return item.sourceLabel || 'عام'; return item.groups.map(g=>g.type==='ai' ? `${g.name} (AI)` : g.name).join('، '); }
-function calculateLectureChecklistStats(subject){ const lectures=subject.lectures || []; const total=lectures.length; const completed=lectures.reduce((sum,g)=>sum + (state.checklistCompleted[g.id] ? 1 : 0), 0); const remaining=Math.max(0,total-completed); return { total, completed, remaining, percentage: total?Math.round((completed/total)*100):0 }; }
+function calculateLectureChecklistStats(subject){ 
+  // التأكد من استخدام Lectures فقط
+  const lectures=subject.lectures || []; 
+  const total=lectures.length; 
+  // استخدام نفس مصدر الحقيقة state.checklistCompleted
+  const completed=lectures.reduce((sum,g)=>sum + (state.checklistCompleted[g.id] ? 1 : 0), 0); 
+  const remaining=Math.max(0,total-completed); 
+  return { total, completed, remaining, percentage: total?Math.round((completed/total)*100):0 }; 
+}
 function getPromptLabelForGroup(group){ if(group.type==='year') return 'Batch'; if(group.type==='ai') return 'AI'; return 'Lecture'; }
 function getStatsSectionPalette(type){
   if(state.settings.theme === 'pirates'){
@@ -699,7 +707,10 @@ function closeChecklistSubject(){ state.currentSubject = null; renderChecklist()
 function renderChecklistSubject(){
   const subject = state.currentSubject;
   if(!subject) return;
+  
+  // استخدام الدالة الجديدة لحساب الإحصائيات (تضمن Lectures فقط)
   const stats = calculateLectureChecklistStats(subject);
+  
   if(el('checklist-subject-summary')) el('checklist-subject-summary').innerHTML = `
       <div class="progress-card">
         <h4>☑️ ${escapeHtml(subject.name)}</h4>
@@ -711,7 +722,28 @@ function renderChecklistSubject(){
         </div>
         <div class="progress-bar" style="margin-top:12px;"><span style="width:${stats.percentage}%"></span></div>
       </div>`;
-if(el('checklist-subject-lectures')) el('checklist-subject-lectures').innerHTML = subject.lectures.length ? subject.lectures.map(group => { const checked = !!state.checklistCompleted[group.id]; return `<label class="checklist-lecture-row"><input type="checkbox" ${checked?'checked':''} disabled><span class="checklist-lecture-name ${checked?'completed':''}" style="cursor:pointer;" onclick="showChecklistLectureConfirmation('${group.id}')">${escapeHtml(group.name)}</span><span class="checklist-lecture-count">${group.questions.length} سؤال</span></label>`; }).join('') : '<div class="empty-state"><p>لا توجد محاضرات ضمن هذه المادة.</p></div>';
+  
+  // عرض محاضرات Lectures فقط
+  if(el('checklist-subject-lectures')) {
+    // الترتيب: استخدام نفس الترتيب المستخدم في Exams
+    const sectionType = 'lectures';
+    const subjectName = subject.name;
+    const groups = subject.lectures || [];
+    // تطبيق نفس ترتيب Exams على Checklist
+    const orderedGroups = ensureGroupOrder(groups, sectionType, subjectName);
+    
+    el('checklist-subject-lectures').innerHTML = orderedGroups.length ? 
+      orderedGroups.map(group => { 
+        const checked = !!state.checklistCompleted[group.id]; 
+        const completionClass = checked ? 'completed' : '';
+        return `<label class="checklist-lecture-row">
+          <input type="checkbox" ${checked?'checked':''} disabled>
+          <span class="checklist-lecture-name ${completionClass}" style="cursor:pointer;" onclick="showChecklistLectureConfirmation('${group.id}')">${escapeHtml(group.name)}</span>
+          <span class="checklist-lecture-count">${group.questions.length} سؤال</span>
+        </label>`;
+      }).join('') : 
+      '<div class="empty-state"><p>لا توجد محاضرات ضمن هذه المادة.</p></div>';
+  }
 }
 function toggleChecklistSubject(subjectId){ openChecklistSubject(subjectId); }
 function toggleChecklistLecture(groupId){ 
@@ -737,61 +769,94 @@ function toggleChecklistLecture(groupId){
   saveChecklistStore(); 
   renderChecklistSubject();
 }
-function showChecklistLectureConfirmation(groupId){ 
+function showChecklistLectureConfirmation(groupId) {
   const subject = state.currentSubject;
-  if(!subject) return;
-  
+  if (!subject) return;
+
   const lecture = (subject.lectures || []).find(g => g.id === groupId);
-  if(!lecture) return;
-  
+  if (!lecture) return;
+
+  // استدعاء setGroupCompleted مع الخيارات المناسبة
+  // استخدام removeDialogExtras للتأكد من عدم تراكم الأزرار
+  const isDone = !!state.checklistCompleted[groupId];
+
+  if (isDone) {
+    showDialog({
+      title: 'إعادة الدراسة',
+      message: `<div>هل تريد إعادة دراسة <strong>${escapeHtml(lecture.name)}</strong>؟</div><div style="margin-top:8px;color:var(--text-light)">سيتم إزالة التحديد عنها من هنا ومن قسم Exams، وتصفير إحصائياتها.</div>`,
+      showCancel: true,
+      confirmText: 'نعم، أعدها للدراسة',
+      cancelText: 'إلغاء',
+      onConfirm: () => {
+        setGroupCompleted(groupId, false, { resetProgress: true });
+        showToast('تمت إزالة التحديد وتصفير إحصائيات المحاضرة.', 'success');
+      },
+      onCancel: () => {}
+    });
+    return;
+  }
+
   showDialog({
     title: 'تأكيد الإنجاز',
-    message: `هل أتممت ${escapeHtml(lecture.name)} بالفعل؟`,
+    message: `<div>هل أتممت <strong>${escapeHtml(lecture.name)}</strong> بالفعل؟</div>`,
     showCancel: true,
     confirmText: 'نعم',
     cancelText: 'إلغاء',
     onConfirm: () => {
-      state.checklistCompleted[groupId] = true;
-      saveChecklistStore();
-      renderChecklistSubject();
+      setGroupCompleted(groupId, true, { moveBottom: false, countAsAnswered: true });
+      showToast('تم تعليم المحاضرة كمكتملة.', 'success');
     },
     onCancel: () => {}
   });
-  
+
+  // إضافة زر "نعم ونقلها للأسفل" مع ضمان عدم التكرار
   setTimeout(() => {
     const actions = document.querySelector('#dialog-overlay .dialog-actions');
     if (!actions) return;
-    
+
+    // إزالة أي أزرار إضافية سابقة (باستثناء الأزرار الأساسية)
+    actions.querySelectorAll('.dialog-extra-btn').forEach(btn => btn.remove());
+
     const confirmBtn = document.getElementById('dialog-confirm');
     const cancelBtn = document.getElementById('dialog-cancel');
     if (!confirmBtn || !cancelBtn) return;
-    
+
+    // التأكد من أن confirmBtn و cancelBtn موجودين بالترتيب الصحيح
+    // نعيد تنظيم الأزرار بشكل نظيف
+    // إزالة جميع الأزرار الحالية
+    while (actions.firstChild) {
+      actions.removeChild(actions.firstChild);
+    }
+
+    // إضافة زر "نعم" (confirm)
     confirmBtn.textContent = 'نعم';
-    cancelBtn.textContent = 'إلغاء';
-    
+    confirmBtn.className = 'btn-primary';
+    confirmBtn.onclick = () => {
+      hideDialog();
+      setGroupCompleted(groupId, true, { moveBottom: false, countAsAnswered: true });
+      showToast('تم تعليم المحاضرة كمكتملة.', 'success');
+    };
+    actions.appendChild(confirmBtn);
+
+    // إضافة زر "نعم ونقلها للأسفل"
     const moveBtn = document.createElement('button');
     moveBtn.className = 'btn-primary dialog-extra-btn';
     moveBtn.textContent = 'نعم ونقلها للأسفل';
     moveBtn.onclick = () => {
       hideDialog();
-      state.checklistCompleted[groupId] = true;
-      
-      const lectures = state.currentSubject.lectures || [];
-      const index = lectures.findIndex(g => g.id === groupId);
-      if(index !== -1) {
-        const lecture = lectures.splice(index, 1)[0];
-        lectures.push(lecture);
-      }
-      
-      saveChecklistStore();
-      renderChecklistSubject();
+      setGroupCompleted(groupId, true, { moveBottom: true, countAsAnswered: true });
+      showToast('تم تعليم المحاضرة كمكتملة ونقلها للأسفل.', 'success');
     };
-    
-    actions.removeChild(confirmBtn);
-    actions.removeChild(cancelBtn);
-    actions.appendChild(confirmBtn);
     actions.appendChild(moveBtn);
+
+    // إضافة زر "إلغاء"
+    cancelBtn.textContent = 'إلغاء';
+    cancelBtn.className = 'btn-secondary';
+    cancelBtn.onclick = () => {
+      hideDialog();
+    };
     actions.appendChild(cancelBtn);
+
   }, 0);
 }
 function openSubject(subjectId){ state.currentSubject=state.displayedSubjects.find(s=>s.id===subjectId) || state.subjects.find(s=>s.id===subjectId) || null; if(!state.currentSubject){ showToast('المادة غير موجودة.','error'); return; } const t=theme(); el('subject-sections-title').textContent=state.currentSubject.name; el('subject-sections-summary').innerHTML=`<div class="subject-summary-grid"><div><span>${t.icons.lectures} المحاضرات</span><strong>${state.currentSubject.lectures.length}</strong></div><div><span>${t.icons.years} Years</span><strong>${state.currentSubject.years.length}</strong></div><div><span>${t.icons.ai} AI</span><strong>${state.currentSubject.ai.length}</strong></div><div><span>${t.icons.progress} إجمالي الأسئلة</span><strong>${state.currentSubject.totalQuestions}</strong></div></div>`; const cards=[]; if(state.currentSubject.lectures.length) cards.push(buildCategoryCard('lectures','Lectures','Lectures',state.currentSubject.lectures.length,countQuestions(state.currentSubject.lectures),true)); if(state.currentSubject.years.length) cards.push(buildCategoryCard('years','Years','Years',state.currentSubject.years.length,countQuestions(state.currentSubject.years),true)); if(state.currentSubject.ai.length || (state.browseMode==='all' && state.currentSubject.hasAiFolder)) cards.push(buildCategoryCard('ai','AI','AI',state.currentSubject.ai.length,countQuestions(state.currentSubject.ai),state.currentSubject.ai.length>0 || (state.browseMode==='all' && state.currentSubject.hasAiFolder))); el('subject-categories').innerHTML=cards.join('') || '<div class="empty-state"><div class="empty-icon">📭</div><p>لا توجد ملفات TXT بعد داخل هذه المادة.</p></div>'; showScreen('subject-sections-screen'); }
