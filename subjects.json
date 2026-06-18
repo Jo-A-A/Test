@@ -137,7 +137,234 @@
         ]
       }
     ],
-    "ai": [],
+    "ai": [
+      {
+        "id": "internal__ai__pancreatitis",
+        "name": "Pancreatitis",
+        "type": "ai",
+        "subjectName": "Internal",
+        "path": "Internal/AI/Pancreatitis.txt",
+        "questions": [
+          {
+            "id": "internal__ai__pancreatitis__1__r3kge",
+            "number": "1",
+            "text": "Pancreatitis Which of the following is the most sensitive and specific serum biomarker for the diagnosis of acute pancreatitis?",
+            "options": [
+              "Serum amylase",
+              "Serum lipase",
+              "Alkaline phosphatase",
+              "Alanine aminotransferase (ALT)",
+              "C-reactive protein (CRP)"
+            ],
+            "originalOptions": [
+              "Serum amylase",
+              "Serum lipase",
+              "Alkaline phosphatase",
+              "Alanine aminotransferase (ALT)",
+              "C-reactive protein (CRP)"
+            ],
+            "correctAnswer": "B) Serum lipase",
+            "correctAnswerText": "Serum lipase",
+            "correctIndex": 1,
+            "correctAnswerLetter": "B",
+            "explanation": "Serum lipase is preferred over serum amylase because it remains elevated longer and has higher sensitivity and specificity for pancreatic tissue injury. Amylase can rise in non-pancreatic conditions and drops quickly.",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Internal",
+            "subjectId": "internal",
+            "lectureName": "Pancreatitis",
+            "groupName": "Pancreatitis",
+            "sourceType": "ai"
+          },
+          {
+            "id": "internal__ai__pancreatitis__2__8xuesk",
+            "number": "2",
+            "text": "Which of the following scoring systems is specifically designed to assess the severity of acute pancreatitis at the time of admission and monitor progress over the first 48 hours using criteria such as WBC count, blood glucose, and fluid sequestration?",
+            "options": [
+              "CHADS2 score",
+              "Ranson criteria",
+              "Child-Pugh score",
+              "CURB-65",
+              "Glasgow Coma Scale"
+            ],
+            "originalOptions": [
+              "CHADS2 score",
+              "Ranson criteria",
+              "Child-Pugh score",
+              "CURB-65",
+              "Glasgow Coma Scale"
+            ],
+            "correctAnswer": "B) Ranson criteria",
+            "correctAnswerText": "Ranson criteria",
+            "correctIndex": 1,
+            "correctAnswerLetter": "B",
+            "explanation": "Ranson criteria evaluate 5 parameters at admission and 6 parameters during the initial 48 hours to predict the severity and mortality risk of acute pancreatitis. The other scales are for stroke, liver failure, pneumonia, or consciousness.",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Internal",
+            "subjectId": "internal",
+            "lectureName": "Pancreatitis",
+            "groupName": "Pancreatitis",
+            "sourceType": "ai"
+          },
+          {
+            "id": "internal__ai__pancreatitis__3__45gu1i",
+            "number": "3",
+            "text": "A 45-year-old patient with severe acute pancreatitis develops a persistent high fever and worsening abdominal pain 2 weeks after admission. A CT scan reveals gas bubbles within a well-defined pancreatic collection. Which of the following is the most appropriate next step in management?",
+            "options": [
+              "Conservative management with intravenous fluids only",
+              "Immediate prophylactic administration of antihistamines",
+              "Initiating empiric antibiotic therapy and planning for drainage",
+              "High-dose corticosteroid therapy",
+              "Immediate total pancreatectomy"
+            ],
+            "originalOptions": [
+              "Conservative management with intravenous fluids only",
+              "Immediate prophylactic administration of antihistamines",
+              "Initiating empiric antibiotic therapy and planning for drainage",
+              "High-dose corticosteroid therapy",
+              "Immediate total pancreatectomy"
+            ],
+            "correctAnswer": "C) Initiating empiric antibiotic therapy and planning for drainage",
+            "correctAnswerText": "Initiating empiric antibiotic therapy and planning for drainage",
+            "correctIndex": 2,
+            "correctAnswerLetter": "C",
+            "explanation": "The presence of gas bubbles within a fluid collection indicates infected pancreatic necrosis or abscess. This requires targeted antibiotic treatment (such as carbapenems) along with minimally invasive or surgical necrosectomy/drainage.",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Internal",
+            "subjectId": "internal",
+            "lectureName": "Pancreatitis",
+            "groupName": "Pancreatitis",
+            "sourceType": "ai"
+          },
+          {
+            "id": "internal__ai__pancreatitis__4__45wg0l",
+            "number": "4",
+            "text": "Which of the following physical examination findings is characterized by ecchymosis around the umbilicus, indicating severe necrotizing pancreatitis with retroperitoneal hemorrhage?",
+            "options": [
+              "Grey Turner's sign",
+              "Cullen's sign",
+              "Murphy's sign",
+              "McBurney's sign",
+              "Rovsing's sign"
+            ],
+            "originalOptions": [
+              "Grey Turner's sign",
+              "Cullen's sign",
+              "Murphy's sign",
+              "McBurney's sign",
+              "Rovsing's sign"
+            ],
+            "correctAnswer": "B) Cullen's sign",
+            "correctAnswerText": "Cullen's sign",
+            "correctIndex": 1,
+            "correctAnswerLetter": "B",
+            "explanation": "Cullen's sign is superficial bruising around the umbilicus. Grey Turner's sign refers to bruising along the flanks. Both signs represent retroperitoneal bleeding associated with severe hemorrhagic pancreatitis.",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Internal",
+            "subjectId": "internal",
+            "lectureName": "Pancreatitis",
+            "groupName": "Pancreatitis",
+            "sourceType": "ai"
+          },
+          {
+            "id": "internal__ai__pancreatitis__5__q94gse",
+            "number": "5",
+            "text": "What is the classic clinical triad used to recognize advanced chronic pancreatitis?",
+            "options": [
+              "Jaundice, weight loss, and palpable gallbladder",
+              "Steatorrhea, pancreatic calcifications, and diabetes mellitus",
+              "Abdominal pain, ascites, and pleural effusion",
+              "Fever, right upper quadrant pain, and jaundice",
+              "Hematemesis, melena, and splenomegaly"
+            ],
+            "originalOptions": [
+              "Jaundice, weight loss, and palpable gallbladder",
+              "Steatorrhea, pancreatic calcifications, and diabetes mellitus",
+              "Abdominal pain, ascites, and pleural effusion",
+              "Fever, right upper quadrant pain, and jaundice",
+              "Hematemesis, melena, and splenomegaly"
+            ],
+            "correctAnswer": "B) Steatorrhea, pancreatic calcifications, and diabetes mellitus",
+            "correctAnswerText": "Steatorrhea, pancreatic calcifications, and diabetes mellitus",
+            "correctIndex": 1,
+            "correctAnswerLetter": "B",
+            "explanation": "This classic triad signifies the loss of both exocrine function (causing fat malabsorption/steatorrhea) and endocrine function (causing diabetes) due to extensive parenchymal destruction and calcification over time.",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Internal",
+            "subjectId": "internal",
+            "lectureName": "Pancreatitis",
+            "groupName": "Pancreatitis",
+            "sourceType": "ai"
+          },
+          {
+            "id": "internal__ai__pancreatitis__6__ajqz14",
+            "number": "6",
+            "text": "A patient with a history of recurrent acute pancreatitis is found to have significantly elevated serum IgG4 levels. Which type of pancreatitis is most strongly associated with this finding?",
+            "options": [
+              "Hereditary pancreatitis",
+              "Alcoholic chronic pancreatitis",
+              "Autoimmune pancreatitis (Type 1)",
+              "Tropical pancreatitis",
+              "Idiopathic pancreatitis"
+            ],
+            "originalOptions": [
+              "Hereditary pancreatitis",
+              "Alcoholic chronic pancreatitis",
+              "Autoimmune pancreatitis (Type 1)",
+              "Tropical pancreatitis",
+              "Idiopathic pancreatitis"
+            ],
+            "correctAnswer": "C) Autoimmune pancreatitis (Type 1)",
+            "correctAnswerText": "Autoimmune pancreatitis (Type 1)",
+            "correctIndex": 2,
+            "correctAnswerLetter": "C",
+            "explanation": "Type 1 Autoimmune Pancreatitis is part of an IgG4-related systemic disease. It responds well to steroid therapy and characteristically shows elevated serum levels of IgG4 antibodies.",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Internal",
+            "subjectId": "internal",
+            "lectureName": "Pancreatitis",
+            "groupName": "Pancreatitis",
+            "sourceType": "ai"
+          },
+          {
+            "id": "internal__ai__pancreatitis__7__ks54uh",
+            "number": "7",
+            "text": "Which of the following pathogenic mechanisms initiates the tissue damage seen in acute pancreatitis?",
+            "options": [
+              "Bacterial infection of the biliary tree",
+              "Premature intra-acinar activation of trypsinogen to trypsin",
+              "Autoimmune destruction of islet cells",
+              "Ischemic injury due to mesenteric artery occlusion",
+              "Excessive secretion of bicarbonate by pancreatic ductal cells"
+            ],
+            "originalOptions": [
+              "Bacterial infection of the biliary tree",
+              "Premature intra-acinar activation of trypsinogen to trypsin",
+              "Autoimmune destruction of islet cells",
+              "Ischemic injury due to mesenteric artery occlusion",
+              "Excessive secretion of bicarbonate by pancreatic ductal cells"
+            ],
+            "correctAnswer": "B) Premature intra-acinar activation of trypsinogen to trypsin",
+            "correctAnswerText": "Premature intra-acinar activation of trypsinogen to trypsin",
+            "correctIndex": 1,
+            "correctAnswerLetter": "B",
+            "explanation": "The cornerstone of acute pancreatitis pathogenesis is the inappropriate, premature activation of digestive zymogens (specifically trypsinogen to trypsin) within the pancreatic acinar cells, leading to autodigestion of the gland.",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Internal",
+            "subjectId": "internal",
+            "lectureName": "Pancreatitis",
+            "groupName": "Pancreatitis",
+            "sourceType": "ai"
+          }
+        ]
+      }
+    ],
     "years": [
       {
         "id": "internal__year__aorta-5",
@@ -416,11 +643,228 @@
         "lectureName": "Pancreatitis",
         "groupName": "Pancreatitis",
         "sourceType": "lecture"
+      },
+      {
+        "id": "internal__ai__pancreatitis__1__r3kge",
+        "number": "1",
+        "text": "Pancreatitis Which of the following is the most sensitive and specific serum biomarker for the diagnosis of acute pancreatitis?",
+        "options": [
+          "Serum amylase",
+          "Serum lipase",
+          "Alkaline phosphatase",
+          "Alanine aminotransferase (ALT)",
+          "C-reactive protein (CRP)"
+        ],
+        "originalOptions": [
+          "Serum amylase",
+          "Serum lipase",
+          "Alkaline phosphatase",
+          "Alanine aminotransferase (ALT)",
+          "C-reactive protein (CRP)"
+        ],
+        "correctAnswer": "B) Serum lipase",
+        "correctAnswerText": "Serum lipase",
+        "correctIndex": 1,
+        "correctAnswerLetter": "B",
+        "explanation": "Serum lipase is preferred over serum amylase because it remains elevated longer and has higher sensitivity and specificity for pancreatic tissue injury. Amylase can rise in non-pancreatic conditions and drops quickly.",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Internal",
+        "subjectId": "internal",
+        "lectureName": "Pancreatitis",
+        "groupName": "Pancreatitis",
+        "sourceType": "ai"
+      },
+      {
+        "id": "internal__ai__pancreatitis__2__8xuesk",
+        "number": "2",
+        "text": "Which of the following scoring systems is specifically designed to assess the severity of acute pancreatitis at the time of admission and monitor progress over the first 48 hours using criteria such as WBC count, blood glucose, and fluid sequestration?",
+        "options": [
+          "CHADS2 score",
+          "Ranson criteria",
+          "Child-Pugh score",
+          "CURB-65",
+          "Glasgow Coma Scale"
+        ],
+        "originalOptions": [
+          "CHADS2 score",
+          "Ranson criteria",
+          "Child-Pugh score",
+          "CURB-65",
+          "Glasgow Coma Scale"
+        ],
+        "correctAnswer": "B) Ranson criteria",
+        "correctAnswerText": "Ranson criteria",
+        "correctIndex": 1,
+        "correctAnswerLetter": "B",
+        "explanation": "Ranson criteria evaluate 5 parameters at admission and 6 parameters during the initial 48 hours to predict the severity and mortality risk of acute pancreatitis. The other scales are for stroke, liver failure, pneumonia, or consciousness.",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Internal",
+        "subjectId": "internal",
+        "lectureName": "Pancreatitis",
+        "groupName": "Pancreatitis",
+        "sourceType": "ai"
+      },
+      {
+        "id": "internal__ai__pancreatitis__3__45gu1i",
+        "number": "3",
+        "text": "A 45-year-old patient with severe acute pancreatitis develops a persistent high fever and worsening abdominal pain 2 weeks after admission. A CT scan reveals gas bubbles within a well-defined pancreatic collection. Which of the following is the most appropriate next step in management?",
+        "options": [
+          "Conservative management with intravenous fluids only",
+          "Immediate prophylactic administration of antihistamines",
+          "Initiating empiric antibiotic therapy and planning for drainage",
+          "High-dose corticosteroid therapy",
+          "Immediate total pancreatectomy"
+        ],
+        "originalOptions": [
+          "Conservative management with intravenous fluids only",
+          "Immediate prophylactic administration of antihistamines",
+          "Initiating empiric antibiotic therapy and planning for drainage",
+          "High-dose corticosteroid therapy",
+          "Immediate total pancreatectomy"
+        ],
+        "correctAnswer": "C) Initiating empiric antibiotic therapy and planning for drainage",
+        "correctAnswerText": "Initiating empiric antibiotic therapy and planning for drainage",
+        "correctIndex": 2,
+        "correctAnswerLetter": "C",
+        "explanation": "The presence of gas bubbles within a fluid collection indicates infected pancreatic necrosis or abscess. This requires targeted antibiotic treatment (such as carbapenems) along with minimally invasive or surgical necrosectomy/drainage.",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Internal",
+        "subjectId": "internal",
+        "lectureName": "Pancreatitis",
+        "groupName": "Pancreatitis",
+        "sourceType": "ai"
+      },
+      {
+        "id": "internal__ai__pancreatitis__4__45wg0l",
+        "number": "4",
+        "text": "Which of the following physical examination findings is characterized by ecchymosis around the umbilicus, indicating severe necrotizing pancreatitis with retroperitoneal hemorrhage?",
+        "options": [
+          "Grey Turner's sign",
+          "Cullen's sign",
+          "Murphy's sign",
+          "McBurney's sign",
+          "Rovsing's sign"
+        ],
+        "originalOptions": [
+          "Grey Turner's sign",
+          "Cullen's sign",
+          "Murphy's sign",
+          "McBurney's sign",
+          "Rovsing's sign"
+        ],
+        "correctAnswer": "B) Cullen's sign",
+        "correctAnswerText": "Cullen's sign",
+        "correctIndex": 1,
+        "correctAnswerLetter": "B",
+        "explanation": "Cullen's sign is superficial bruising around the umbilicus. Grey Turner's sign refers to bruising along the flanks. Both signs represent retroperitoneal bleeding associated with severe hemorrhagic pancreatitis.",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Internal",
+        "subjectId": "internal",
+        "lectureName": "Pancreatitis",
+        "groupName": "Pancreatitis",
+        "sourceType": "ai"
+      },
+      {
+        "id": "internal__ai__pancreatitis__5__q94gse",
+        "number": "5",
+        "text": "What is the classic clinical triad used to recognize advanced chronic pancreatitis?",
+        "options": [
+          "Jaundice, weight loss, and palpable gallbladder",
+          "Steatorrhea, pancreatic calcifications, and diabetes mellitus",
+          "Abdominal pain, ascites, and pleural effusion",
+          "Fever, right upper quadrant pain, and jaundice",
+          "Hematemesis, melena, and splenomegaly"
+        ],
+        "originalOptions": [
+          "Jaundice, weight loss, and palpable gallbladder",
+          "Steatorrhea, pancreatic calcifications, and diabetes mellitus",
+          "Abdominal pain, ascites, and pleural effusion",
+          "Fever, right upper quadrant pain, and jaundice",
+          "Hematemesis, melena, and splenomegaly"
+        ],
+        "correctAnswer": "B) Steatorrhea, pancreatic calcifications, and diabetes mellitus",
+        "correctAnswerText": "Steatorrhea, pancreatic calcifications, and diabetes mellitus",
+        "correctIndex": 1,
+        "correctAnswerLetter": "B",
+        "explanation": "This classic triad signifies the loss of both exocrine function (causing fat malabsorption/steatorrhea) and endocrine function (causing diabetes) due to extensive parenchymal destruction and calcification over time.",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Internal",
+        "subjectId": "internal",
+        "lectureName": "Pancreatitis",
+        "groupName": "Pancreatitis",
+        "sourceType": "ai"
+      },
+      {
+        "id": "internal__ai__pancreatitis__6__ajqz14",
+        "number": "6",
+        "text": "A patient with a history of recurrent acute pancreatitis is found to have significantly elevated serum IgG4 levels. Which type of pancreatitis is most strongly associated with this finding?",
+        "options": [
+          "Hereditary pancreatitis",
+          "Alcoholic chronic pancreatitis",
+          "Autoimmune pancreatitis (Type 1)",
+          "Tropical pancreatitis",
+          "Idiopathic pancreatitis"
+        ],
+        "originalOptions": [
+          "Hereditary pancreatitis",
+          "Alcoholic chronic pancreatitis",
+          "Autoimmune pancreatitis (Type 1)",
+          "Tropical pancreatitis",
+          "Idiopathic pancreatitis"
+        ],
+        "correctAnswer": "C) Autoimmune pancreatitis (Type 1)",
+        "correctAnswerText": "Autoimmune pancreatitis (Type 1)",
+        "correctIndex": 2,
+        "correctAnswerLetter": "C",
+        "explanation": "Type 1 Autoimmune Pancreatitis is part of an IgG4-related systemic disease. It responds well to steroid therapy and characteristically shows elevated serum levels of IgG4 antibodies.",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Internal",
+        "subjectId": "internal",
+        "lectureName": "Pancreatitis",
+        "groupName": "Pancreatitis",
+        "sourceType": "ai"
+      },
+      {
+        "id": "internal__ai__pancreatitis__7__ks54uh",
+        "number": "7",
+        "text": "Which of the following pathogenic mechanisms initiates the tissue damage seen in acute pancreatitis?",
+        "options": [
+          "Bacterial infection of the biliary tree",
+          "Premature intra-acinar activation of trypsinogen to trypsin",
+          "Autoimmune destruction of islet cells",
+          "Ischemic injury due to mesenteric artery occlusion",
+          "Excessive secretion of bicarbonate by pancreatic ductal cells"
+        ],
+        "originalOptions": [
+          "Bacterial infection of the biliary tree",
+          "Premature intra-acinar activation of trypsinogen to trypsin",
+          "Autoimmune destruction of islet cells",
+          "Ischemic injury due to mesenteric artery occlusion",
+          "Excessive secretion of bicarbonate by pancreatic ductal cells"
+        ],
+        "correctAnswer": "B) Premature intra-acinar activation of trypsinogen to trypsin",
+        "correctAnswerText": "Premature intra-acinar activation of trypsinogen to trypsin",
+        "correctIndex": 1,
+        "correctAnswerLetter": "B",
+        "explanation": "The cornerstone of acute pancreatitis pathogenesis is the inappropriate, premature activation of digestive zymogens (specifically trypsinogen to trypsin) within the pancreatic acinar cells, leading to autodigestion of the gland.",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Internal",
+        "subjectId": "internal",
+        "lectureName": "Pancreatitis",
+        "groupName": "Pancreatitis",
+        "sourceType": "ai"
       }
     ],
-    "totalQuestions": 4,
-    "totalLectures": 4,
-    "hasAiFolder": false
+    "totalQuestions": 11,
+    "totalLectures": 5,
+    "hasAiFolder": true
   },
   {
     "id": "neurosurgery",
