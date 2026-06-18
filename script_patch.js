@@ -76,7 +76,14 @@
   state.groupPreferences[key] = arr;
   saveGroupPreferences();
 }
-
+function moveGroupToBottomByInfo(subjectName, sectionType, groupId){
+  const key = getGroupOrderKey(subjectName, sectionType);
+  let arr = Array.isArray(state.groupPreferences[key]) ? state.groupPreferences[key].slice() : getOriginalOrderIds(subjectName, sectionType);
+  arr = arr.filter(id => id !== groupId);
+  arr.push(groupId);
+  state.groupPreferences[key] = arr;
+  saveGroupPreferences();
+}
   function reorderGroupIds(subjectName, sectionType, draggedId, targetId, afterTarget){
     const key = getGroupOrderKey(subjectName, sectionType);
     const arr = Array.isArray(state.groupPreferences[key]) ? state.groupPreferences[key].slice() : getOriginalOrderIds(subjectName, sectionType);
@@ -171,16 +178,17 @@
     try{ syncAutoCompletedLectures(); }catch(e){}
     try{ saveChecklistStore(); }catch(e){}
     try{ saveProgressStore(); }catch(e){}
+    try{ saveGroupPreferences(); }catch(e){}
     if(typeof renderChecklist === 'function') renderChecklist();
     if(typeof renderChecklistSubject === 'function' && el('checklist-subject-screen') && el('checklist-subject-screen').classList.contains('active')) renderChecklistSubject();
     if(typeof renderSubjects === 'function' && state.browseMode === 'all') renderSubjects();
+    if(typeof renderSelectionScreenWithEnhancements === 'function' && el('selection-screen') && el('selection-screen').classList.contains('active')){
+      renderSelectionScreenWithEnhancements();
+    }
     if(typeof updateStatisticsIfOpen === 'function') updateStatisticsIfOpen();
     if(typeof renderMemories === 'function') renderMemories();
-    if(shouldEnhanceSelectionScreen() && el('selection-screen') && el('selection-screen').classList.contains('active')){
-      try{ renderSelectionScreenWithEnhancements(); }catch(e){}
-    }
   }
-        function syncAutoCompletedLectures(){
+   function syncAutoCompletedLectures(){
     let changed = false;
 
     function syncGroup(subject, group, sectionType, progressKey){
@@ -211,17 +219,19 @@
     }
 
     for(const subject of (state.subjects || [])){
+      // تزامن Lectures فقط مع Checklist
       for(const group of (subject.lectures || [])){
         syncGroup(subject, group, 'lectures', `lecture:${subject.name}/${group.name}`);
       }
 
-      for(const group of (subject.ai || [])){
-        syncGroup(subject, group, 'ai', `ai:${subject.name}/${group.name}`);
-      }
+      // إزالة تزامن AI و Years مع Checklist
+      // for(const group of (subject.ai || [])){
+      //   syncGroup(subject, group, 'ai', `ai:${subject.name}/${group.name}`);
+      // }
 
-      for(const group of (subject.years || [])){
-        syncGroup(subject, group, 'years', `year:${subject.name}/${group.name}`);
-      }
+      // for(const group of (subject.years || [])){
+      //   syncGroup(subject, group, 'years', `year:${subject.name}/${group.name}`);
+      // }
     }
 
     if(changed){
@@ -232,7 +242,6 @@
 
     return changed;
   }
-
   function setGroupCompleted(groupId, completed, opts){
   const options = Object.assign({ moveBottom:false, countAsAnswered:false, resetProgress:false }, opts || {});
   const found = findGroupById(groupId);
@@ -247,18 +256,10 @@
     }
 
     if(options.moveBottom){
-      // نقل العنصر إلى الأسفل مباشرة دون إعادة ترتيب إضافية
       moveGroupToBottomByInfo(subject.name, sectionType, group.id);
-      // تحديث currentGroups بناءً على الترتيب الجديد دون استدعاء ensureGroupOrder مرة أخرى
+      // تحديث currentGroups بناءً على الترتيب الجديد
       if(Array.isArray(state.currentGroups) && state.currentGroups.length){
-        const key = getGroupOrderKey(subject.name, sectionType);
-        const newOrder = state.groupPreferences[key] || [];
-        // إعادة ترتيب currentGroups وفقاً للترتيب الجديد
-        state.currentGroups = state.currentGroups.slice().sort((a, b) => {
-          const ia = newOrder.indexOf(a.id);
-          const ib = newOrder.indexOf(b.id);
-          return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
-        });
+        state.currentGroups = ensureGroupOrder(state.currentGroups, sectionType, subject.name);
       }
     }
   } else {
@@ -276,14 +277,17 @@
 
   saveChecklistStore();
   saveProgressStore();
+  saveGroupPreferences();
   rerenderAfterChecklistRelatedChange();
 }
   function markGroupsCompletedBulk(groups){
     groups.forEach(group => {
       state.checklistCompleted[group.id] = true;
       (group.questions || []).forEach(q => addProgressIdsForQuestion(q));
+      // نقل العنصر إلى الأسفل في الترتيب العام
       moveGroupToBottomByInfo(group.subjectName || state.currentSubject?.name || 'unknown', normalizeSectionType(group.type || 'lecture'), group.id);
     });
+    saveGroupPreferences();
     rerenderAfterChecklistRelatedChange();
   }
 
@@ -293,6 +297,7 @@
       (group.questions || []).forEach(q => removeProgressIdsForQuestion(q));
       restoreGroupToOriginalPosition(group.subjectName || state.currentSubject?.name || 'unknown', normalizeSectionType(group.type || 'lecture'), group.id);
     });
+    saveGroupPreferences();
     rerenderAfterChecklistRelatedChange();
   }
 
@@ -336,7 +341,7 @@
     if(isDone){
       showDialog({
         title:'إعادة الدراسة',
-        message:`<div>هل تريد إعادة دراسة <strong>${escapeHtml(group.name)}</strong>؟</div><div style="margin-top:8px;color:var(--text-light)">سيتم إزالة التحديد عنها من هنا ومن قسم Checklist، وتصفير إحصائياتها.</div>`,
+        message:`<div>هل تريد إعادة دراسة <strong>${escapeHtml(group.name)}</strong>؟</div><div style="margin-top:8px;color:var(--text-light)">سيتم إزالة التحديد عنها من هنا ومن قسم Exams، وتصفير إحصائياتها.</div>`,
         showCancel:true,
         confirmText:'نعم، أعدها للدراسة',
         cancelText:'إلغاء',
@@ -362,19 +367,38 @@
     });
 
     setTimeout(() => {
-      // إعادة تعريف زر "نعم ونقلها للأسفل" لضمان النقل الصحيح
       const actions = document.querySelector('#dialog-overlay .dialog-actions');
       if(!actions) return;
+      
+      // إزالة أي أزرار إضافية سابقة
       actions.querySelectorAll('.dialog-extra-btn').forEach(btn => btn.remove());
 
+      const confirmBtn = document.getElementById('dialog-confirm');
+      const cancelBtn = document.getElementById('dialog-cancel');
+      if (!confirmBtn || !cancelBtn) return;
+
+      // إعادة تنظيم الأزرار بشكل نظيف
+      while (actions.firstChild) {
+        actions.removeChild(actions.firstChild);
+      }
+
+      // زر "نعم"
+      confirmBtn.textContent = 'نعم';
+      confirmBtn.className = 'btn-primary';
+      confirmBtn.onclick = () => {
+        hideDialog();
+        setGroupCompleted(group.id, true, { moveBottom:false, countAsAnswered:true });
+        showToast('تم تعليم العنصر كمكتمل.', 'success');
+      };
+      actions.appendChild(confirmBtn);
+
+      // زر "نعم ونقلها للأسفل"
       const moveBtn = document.createElement('button');
       moveBtn.className = 'btn-primary dialog-extra-btn';
       moveBtn.textContent = 'نعم ونقلها للأسفل';
       moveBtn.onclick = function(){
         hideDialog();
-        // تعليم كمكتمل ونقل للأسفل
         setGroupCompleted(group.id, true, { moveBottom:true, countAsAnswered:true });
-        // تحديث currentGroups بالترتيب الجديد
         const found = findGroupById(group.id);
         if(found){
           const { subject, sectionType } = found;
@@ -392,6 +416,15 @@
         showToast('تم تعليم العنصر كمكتمل ونقله للأسفل.', 'success');
       };
       actions.appendChild(moveBtn);
+
+      // زر "إلغاء"
+      cancelBtn.textContent = 'إلغاء';
+      cancelBtn.className = 'btn-secondary';
+      cancelBtn.onclick = () => {
+        hideDialog();
+      };
+      actions.appendChild(cancelBtn);
+
     }, 0);
   };
   window.toggleChecklistGroupCompletion = function(groupId){
@@ -399,26 +432,39 @@
     if(!found) return;
     const isDone = !!state.checklistCompleted[groupId];
     removeDialogExtras();
+    
+    // التأكد من أن العنصر من نوع Lecture فقط
+    if(found.sectionType !== 'lectures'){
+      showToast('يمكن تعليم المحاضرات فقط في هذا القسم.', 'error');
+      return;
+    }
+    
     if(isDone){
       showDialog({
         title:'إعادة الدراسة',
-        message:`<div>هل تريد إعادة دراسة <strong>${escapeHtml(found.group.name)}</strong>؟</div><div style="margin-top:8px;color:var(--text-light)">سيتم إزالة التحديد عنها من قسم Checklist ومن قسم المواد، وتصفير إحصائياتها.</div>`,
+        message:`<div>هل تريد إعادة دراسة <strong>${escapeHtml(found.group.name)}</strong>؟</div><div style="margin-top:8px;color:var(--text-light)">سيتم إزالة التحديد عنها من قسم Checklist ومن قسم Exams، وتصفير إحصائياتها.</div>`,
         showCancel:true,
         confirmText:'نعم، أعدها للدراسة',
         cancelText:'إلغاء',
         onConfirm:()=>{
           setGroupCompleted(groupId, false, { resetProgress:true });
-          showToast('تمت إزالة التحديد وتصفير إحصائيات العنصر.', 'success');
+          showToast('تمت إزالة التحديد وتصفير إحصائيات المحاضرة.', 'success');
         }
       });
     } else {
       setGroupCompleted(groupId, true, { moveBottom:false, countAsAnswered:true });
-      showToast('تم تعليم العنصر كمكتمل.', 'success');
+      showToast('تم تعليم المحاضرة كمكتملة.', 'success');
     }
   };
   window.toggleChecklistLecture = function(groupId){
     const found = findGroupById(groupId);
     if(!found) return;
+
+    // التأكد من أن العنصر من نوع Lecture فقط
+    if(found.sectionType !== 'lectures'){
+      showToast('يمكن تعليم المحاضرات فقط في هذا القسم.', 'error');
+      return;
+    }
 
     const isDone = !!state.checklistCompleted[groupId];
     removeDialogExtras();
@@ -445,7 +491,6 @@
     setGroupCompleted(groupId, true, { moveBottom:false, countAsAnswered:true });
     showToast('تم تعليم المحاضرة كمكتملة.', 'success');
   };
-
   function ensureSelectionBulkToolbar(){
     let toolbar = el('selection-bulk-toolbar');
     if(toolbar) return toolbar;
@@ -516,7 +561,13 @@
         const rect = item.getBoundingClientRect();
         const afterTarget = e.clientY > (rect.top + rect.height / 2);
         reorderGroupIds(subjectName, sectionType, draggedId, group.id, afterTarget);
+        // حفظ الترتيب وتحديث جميع الأقسام
+        saveGroupPreferences();
         renderSelectionScreenWithEnhancements();
+        // تحديث Statistics و Checklist
+        if(typeof updateStatisticsIfOpen === 'function') updateStatisticsIfOpen();
+        if(typeof renderChecklist === 'function') renderChecklist();
+        if(typeof renderChecklistSubject === 'function' && el('checklist-subject-screen') && el('checklist-subject-screen').classList.contains('active')) renderChecklistSubject();
       });
 
       list.appendChild(item);
@@ -706,7 +757,22 @@
 
   const __origGetSubjectTotalQuestionsPatch = typeof getSubjectTotalQuestions === 'function' ? getSubjectTotalQuestions : null;
   const __origGetSubjectAnsweredCountPatch = typeof getSubjectAnsweredCount === 'function' ? getSubjectAnsweredCount : null;
-
+function ensureGroupOrder(groups, sectionType, subjectName){
+  if(!Array.isArray(groups) || !groups.length) return groups || [];
+  const actualSubjectName = subjectName || groups[0]?.subjectName || state.currentSubject?.name || 'unknown';
+  const actualSectionType = sectionType || groups[0]?.type || 'lectures';
+  const key = getGroupOrderKey(actualSubjectName, actualSectionType);
+  const originalIds = getOriginalOrderIds(actualSubjectName, actualSectionType);
+  const fallbackIds = originalIds.length ? originalIds : groups.map(g => g.id);
+  let stored = Array.isArray(state.groupPreferences[key]) ? state.groupPreferences[key].slice() : fallbackIds.slice();
+  const ids = groups.map(g => g.id);
+  const clean = stored.filter(id => ids.includes(id));
+  ids.forEach(id => { if(!clean.includes(id)) clean.push(id); });
+  state.groupPreferences[key] = clean;
+  saveGroupPreferences();
+  const rank = new Map(clean.map((id,i)=>[id,i]));
+  return groups.slice().sort((a,b)=>(rank.get(a.id) ?? 1e9) - (rank.get(b.id) ?? 1e9));
+}
   getSubjectTotalQuestions = function(subject, options = {}){
     const { scope = 'overview', respectVisibilitySettings = false } = options;
 
