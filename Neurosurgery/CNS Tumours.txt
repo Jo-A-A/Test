@@ -1,0 +1,22 @@
+CNS Tumours
+What is the most common primary brain tumor in adults?
+A) Meningioma
+B) Pituitary adenoma
+C) Glioblastoma multiforme (GBM)
+D) Ependymoma
+Correct Answer: C) Glioblastoma multiforme (GBM)
+###
+Which of the following tumors has the WORST prognosis (mean survival)?
+A) Anaplastic astrocytoma
+B) Untreated prolactinoma
+C) Hemangioblastoma with von Hippel-Lindau
+D) Glioblastoma multiforme (GBM)
+Correct Answer: D) Glioblastoma multiforme (GBM)
+###
+Which of the following statements regarding Medulloblastoma is WRONG?
+A) It is the most common malignant primary brain tumor in children
+B) It is a small cell embryonal tumor that typically arises in the cerebellar vermis
+C) It is classified as WHO Grade I because it occurs in children
+D) It often presents with signs and symptoms of hydrocephalus
+Correct Answer: C) It is classified as WHO Grade I because it occurs in children
+###
