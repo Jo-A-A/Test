@@ -53,10 +53,14 @@ function isBatchLine(line){ return /^[A-Za-z][A-Za-z0-9\s&()'\/]+-\s*\d+$/i.test
 function looksLikeMetadataTail(line){ return /^[A-Za-z].{0,60}$/.test(line) && /\d/.test(line) && !/[?.!]$/.test(line); }
 function isMetadataLine(line){ return isPageLine(line) || isBatchLine(line) || looksLikeMetadataTail(line); }
 function previewOption(option, idx){ return `${LETTERS[idx] || idx+1}) ${option}`; }
-function resolveCorrectIndex(options, correctAnswer){
+function resolveCorrectIndex(options, correctAnswer, preferLetterOnly = false){
   if(!Array.isArray(options)||!options.length) return -1;
-  const m=String(correctAnswer||'').match(/^([A-E])/i);
-  if(m){ const ix=m[1].toUpperCase().charCodeAt(0)-65; if(ix>=0&&ix<options.length) return ix; }
+  const m=String(correctAnswer||'').match(/^([A-E])\s*[\)\.\-]\s*/i);
+  if(m){
+    const ix=m[1].toUpperCase().charCodeAt(0)-65;
+    if(ix>=0&&ix<options.length) return ix;
+  }
+  // إذا لم نجد حرفاً أو كان الحرف غير صالح، نستخدم المطابقة النصية
   const ans=normalizeComparisonText(correctAnswer);
   for(let i=0;i<options.length;i++){
     const opt=normalizeComparisonText(options[i]);
@@ -64,10 +68,28 @@ function resolveCorrectIndex(options, correctAnswer){
   }
   return -1;
 }
-function getCorrectIndex(q){ if(typeof q.correctIndex==='number' && q.correctIndex>=0) return q.correctIndex; q.correctIndex=resolveCorrectIndex(q.options||[], q.correctAnswerText || q.correctAnswer || ''); return q.correctIndex; }
+function getCorrectIndex(q){
+  if(typeof q.correctIndex==='number' && q.correctIndex>=0) return q.correctIndex;
+  // إذا كان لدينا حرف الإجابة الصحيحة، نستخدمه
+  if(q.correctAnswerLetter){
+    const letterIndex = q.correctAnswerLetter.charCodeAt(0) - 65;
+    if(letterIndex >= 0 && letterIndex < (q.options||[]).length){
+      q.correctIndex = letterIndex;
+      return letterIndex;
+    }
+  }
+  q.correctIndex=resolveCorrectIndex(q.options||[], q.correctAnswerText || q.correctAnswer || '');
+  return q.correctIndex;
+}
 function isAnswerCorrect(q, idx){ return getCorrectIndex(q)===idx; }
 function getCorrectAnswerText(q){
   if(q.correctAnswerText) return q.correctAnswerText;
+  // استخدام الحرف إن وجد
+  if(q.correctAnswerLetter){
+    const letterIndex = q.correctAnswerLetter.charCodeAt(0) - 65;
+    const opts = q.originalOptions || q.options || [];
+    if(letterIndex >= 0 && letterIndex < opts.length) return stripOptionPrefix(opts[letterIndex]);
+  }
   const idx = resolveCorrectIndex(q.originalOptions || q.options || [], q.correctAnswer || '');
   if(idx>=0 && (q.originalOptions || q.options || [])[idx]) return stripOptionPrefix((q.originalOptions || q.options)[idx]);
   return stripOptionPrefix(q.correctAnswer || '');
@@ -789,21 +811,22 @@ function confirmStartExam(){ try{ if(!state.selectedMode || !state.selectedDirec
 function prepareQuestionForExam(question){
   const clone = JSON.parse(JSON.stringify(question));
   const baseOptions = (clone.options || []).map(opt => stripOptionPrefix(opt));
-
-  // نحافظ على نفس ترتيب الخيارات كما هو في ملف الـ TXT
   clone.originalOptions = baseOptions.slice();
   clone.options = baseOptions.slice();
-
-  // نحسب الإجابة الصحيحة بناءً على الترتيب الأصلي غير المعدل
-  clone.correctAnswerText = getCorrectAnswerText({
-    ...clone,
-    options: baseOptions,
-    originalOptions: baseOptions.slice()
-  });
-
+  // استخدام الحرف المخزن إن وجد
+  if(clone.correctAnswerLetter){
+    const letterIndex = clone.correctAnswerLetter.charCodeAt(0) - 65;
+    if(letterIndex >= 0 && letterIndex < clone.options.length){
+      clone.correctIndex = letterIndex;
+      clone.correctAnswerText = clone.options[letterIndex];
+      clone.correctAnswer = clone.correctAnswerText;
+      return clone;
+    }
+  }
+  // خلاف ذلك نستخدم الطريقة القديمة
+  clone.correctAnswerText = getCorrectAnswerText({ ...clone, options: baseOptions, originalOptions: baseOptions.slice() });
   clone.correctAnswer = clone.correctAnswerText;
   clone.correctIndex = resolveCorrectIndex(clone.options, clone.correctAnswerText);
-
   return clone;
 }
 
@@ -1480,7 +1503,40 @@ function normalizeText(text){ return String(text||'').replace(/^\uFEFF/,'').repl
 function parseQuestionFile(raw, meta){ const text=normalizeText(raw); if(!text) return []; let blocks=text.split(/(?:^|\n)\s*###\s*(?=\n|$)/g).map(x=>x.trim()).filter(Boolean); if(blocks.length<=1){ const paragraphs=text.split(/\n{2,}/).map(x=>x.trim()).filter(Boolean); if(paragraphs.length<=1) blocks=[text]; else { blocks=[]; let current=[]; let hasCorrect=false; for(let i=0;i<paragraphs.length;i++){ const p=paragraphs[i]; const first=(p.split('\n').find(l=>l.trim())||'').trim(); const looksNew=current.length>0 && hasCorrect && !/^(Correct\s*Answer|Explanation)\s*:/i.test(first) && !/^[A-E][\)\.\-]/.test(first) && !isPageLine(first); if(looksNew){ blocks.push(current.join('\n\n').trim()); current=[]; hasCorrect=false; } current.push(p); if(/^\s*Correct\s*Answer\s*:/im.test(p)) hasCorrect=true; if(i===paragraphs.length-1 && current.length) blocks.push(current.join('\n\n').trim()); } } }
   const questions=[]; let fallback=meta.startCounter||1;
   for(let blockIndex=0; blockIndex<blocks.length; blockIndex++){
-    const lines=blocks[blockIndex].split('\n').map(l=>l.trim()).filter(Boolean); if(!lines.length || !lines.some(l=>/^Correct\s*Answer\s*:/i.test(l))) continue; let questionNumber=''; let questionText=''; let options=[]; let correctAnswer=''; let explanation=''; let batchName=''; let pageNumber=''; let startIndex=0; const head=(lines[0]||'').match(/^Question\s*(\d+)\s*[:\-.]?\s*(.*)$/i); if(head){ questionNumber=head[1]||''; if(head[2]) lines[0]=head[2].trim(); else startIndex=1; } const ansIdx=lines.findIndex(l=>/^Correct\s*Answer\s*:/i.test(l)); if(ansIdx===-1) continue; const before=lines.slice(startIndex, ansIdx); const firstOpt=before.findIndex(l=>/^[A-E][\)\.\-]\s*/i.test(l)); if(firstOpt===-1) continue; questionText=before.slice(0,firstOpt).join(' ').trim() || ('Question '+fallback); options=before.slice(firstOpt).filter(l=>/^[A-E][\)\.\-]\s*/i.test(l)).map(stripOptionPrefix); correctAnswer=lines[ansIdx].replace(/^Correct\s*Answer\s*:\s*/i,'').trim(); let i=ansIdx+1; if(i<lines.length && /^Explanation\s*:/i.test(lines[i])){ const exp=[]; const first=lines[i].replace(/^Explanation\s*:\s*/i,'').trim(); if(first) exp.push(first); i++; while(i<lines.length && !isMetadataLine(lines[i])){ exp.push(lines[i]); i++; } explanation=exp.join(' ').trim(); } while(i<lines.length){ const line=lines[i]; if(isPageLine(line)) pageNumber=line; else if(!batchName && isBatchLine(line)) batchName=line; else if(!batchName && looksLikeMetadataTail(line)) batchName=line; else if(!explanation && !/^Explanation\s*:/i.test(line)) explanation=[explanation,line].filter(Boolean).join(' ').trim(); i++; } if(!questionNumber) questionNumber=String(fallback); const correctAnswerText = (()=>{ const possibleIndex = resolveCorrectIndex(options, correctAnswer); if(possibleIndex>=0 && options[possibleIndex]) return options[possibleIndex]; return stripOptionPrefix(correctAnswer); })(); const id=[slugify(meta.subjectName),slugify(meta.sourceType),slugify(meta.lectureName),slugify(questionNumber),hashString(questionText).slice(0,10)].join('__'); questions.push({id,number:questionNumber,text:questionText,options,originalOptions:options.slice(),correctAnswer,correctAnswerText,correctIndex:resolveCorrectIndex(options,correctAnswerText),explanation,batchName,pageNumber,subjectName:meta.subjectName,subjectId:meta.subjectId||slugify(meta.subjectName),lectureName:meta.lectureName,groupName:meta.lectureName,sourceType:meta.sourceType,sourcePath:meta.sourcePath}); fallback++; }
+    const lines=blocks[blockIndex].split('\n').map(l=>l.trim()).filter(Boolean); if(!lines.length || !lines.some(l=>/^Correct\s*Answer\s*:/i.test(l))) continue; let questionNumber=''; let questionText=''; let options=[]; let correctAnswer=''; let correctAnswerLetter=''; let explanation=''; let batchName=''; let pageNumber=''; let startIndex=0; const head=(lines[0]||'').match(/^Question\s*(\d+)\s*[:\-.]?\s*(.*)$/i); if(head){ questionNumber=head[1]||''; if(head[2]) lines[0]=head[2].trim(); else startIndex=1; } const ansIdx=lines.findIndex(l=>/^Correct\s*Answer\s*:/i.test(l)); if(ansIdx===-1) continue; const before=lines.slice(startIndex, ansIdx); const firstOpt=before.findIndex(l=>/^[A-E][\)\.\-]\s*/i.test(l)); if(firstOpt===-1) continue; questionText=before.slice(0,firstOpt).join(' ').trim() || ('Question '+fallback); options=before.slice(firstOpt).filter(l=>/^[A-E][\)\.\-]\s*/i.test(l)).map(stripOptionPrefix); correctAnswer=lines[ansIdx].replace(/^Correct\s*Answer\s*:\s*/i,'').trim();
+    // استخراج حرف الإجابة الصحيحة (A-E)
+    const letterMatch = correctAnswer.match(/^([A-E])\s*[\)\.\-]\s*/i);
+    if(letterMatch) correctAnswerLetter = letterMatch[1].toUpperCase();
+    else correctAnswerLetter = '';
+    let i=ansIdx+1; if(i<lines.length && /^Explanation\s*:/i.test(lines[i])){ const exp=[]; const first=lines[i].replace(/^Explanation\s*:\s*/i,'').trim(); if(first) exp.push(first); i++; while(i<lines.length && !isMetadataLine(lines[i])){ exp.push(lines[i]); i++; } explanation=exp.join(' ').trim(); } while(i<lines.length){ const line=lines[i]; if(isPageLine(line)) pageNumber=line; else if(!batchName && isBatchLine(line)) batchName=line; else if(!batchName && looksLikeMetadataTail(line)) batchName=line; else if(!explanation && !/^Explanation\s*:/i.test(line)) explanation=[explanation,line].filter(Boolean).join(' ').trim(); i++; } if(!questionNumber) questionNumber=String(fallback);
+    // تحديد الإجابة الصحيحة باستخدام الحرف أولاً
+    let correctIndex = -1;
+    let correctAnswerText = '';
+    if(correctAnswerLetter){
+      const letterIndex = correctAnswerLetter.charCodeAt(0) - 65;
+      if(letterIndex >= 0 && letterIndex < options.length){
+        correctIndex = letterIndex;
+        correctAnswerText = options[letterIndex];
+      }
+    }
+    if(correctIndex === -1){
+      // فشل في استخدام الحرف، نستخدم الطريقة النصية القديمة
+      const possibleIndex = resolveCorrectIndex(options, correctAnswer);
+      if(possibleIndex >= 0 && options[possibleIndex]){
+        correctIndex = possibleIndex;
+        correctAnswerText = options[possibleIndex];
+      } else {
+        correctAnswerText = stripOptionPrefix(correctAnswer);
+        // نحاول مرة أخرى مع النص المجرد
+        const fallbackIndex = resolveCorrectIndex(options, correctAnswerText);
+        if(fallbackIndex >= 0 && options[fallbackIndex]){
+          correctIndex = fallbackIndex;
+          correctAnswerText = options[fallbackIndex];
+        }
+      }
+    }
+    const id=[slugify(meta.subjectName),slugify(meta.sourceType),slugify(meta.lectureName),slugify(questionNumber),hashString(questionText).slice(0,10)].join('__');
+    questions.push({id,number:questionNumber,text:questionText,options,originalOptions:options.slice(),correctAnswer,correctAnswerText,correctIndex,correctAnswerLetter,explanation,batchName,pageNumber,subjectName:meta.subjectName,subjectId:meta.subjectId||slugify(meta.subjectName),lectureName:meta.lectureName,groupName:meta.lectureName,sourceType:meta.sourceType,sourcePath:meta.sourcePath}); fallback++; }
   return questions;
 }
 
