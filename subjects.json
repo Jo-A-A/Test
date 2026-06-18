@@ -216,6 +216,102 @@
         ]
       },
       {
+        "id": "neurosurgery__lecture__cns-tumours",
+        "name": "CNS Tumours",
+        "type": "lecture",
+        "subjectName": "Neurosurgery",
+        "path": "Neurosurgery/CNS Tumours.txt",
+        "questions": [
+          {
+            "id": "neurosurgery__lecture__cns-tumours__1__99khva",
+            "number": "1",
+            "text": "CNS Tumours What is the most common primary brain tumor in adults?",
+            "options": [
+              "Meningioma",
+              "Pituitary adenoma",
+              "Glioblastoma multiforme (GBM)",
+              "Ependymoma"
+            ],
+            "originalOptions": [
+              "Meningioma",
+              "Pituitary adenoma",
+              "Glioblastoma multiforme (GBM)",
+              "Ependymoma"
+            ],
+            "correctAnswer": "C) Glioblastoma multiforme (GBM)",
+            "correctAnswerText": "Glioblastoma multiforme (GBM)",
+            "correctIndex": 2,
+            "correctAnswerLetter": "C",
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "CNS Tumours",
+            "groupName": "CNS Tumours",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "neurosurgery__lecture__cns-tumours__2__yes2uv",
+            "number": "2",
+            "text": "Which of the following tumors has the WORST prognosis (mean survival)?",
+            "options": [
+              "Anaplastic astrocytoma",
+              "Untreated prolactinoma",
+              "Hemangioblastoma with von Hippel-Lindau",
+              "Glioblastoma multiforme (GBM)"
+            ],
+            "originalOptions": [
+              "Anaplastic astrocytoma",
+              "Untreated prolactinoma",
+              "Hemangioblastoma with von Hippel-Lindau",
+              "Glioblastoma multiforme (GBM)"
+            ],
+            "correctAnswer": "D) Glioblastoma multiforme (GBM)",
+            "correctAnswerText": "Glioblastoma multiforme (GBM)",
+            "correctIndex": 3,
+            "correctAnswerLetter": "D",
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "CNS Tumours",
+            "groupName": "CNS Tumours",
+            "sourceType": "lecture"
+          },
+          {
+            "id": "neurosurgery__lecture__cns-tumours__3__imyd44",
+            "number": "3",
+            "text": "Which of the following statements regarding Medulloblastoma is WRONG?",
+            "options": [
+              "It is the most common malignant primary brain tumor in children",
+              "It is a small cell embryonal tumor that typically arises in the cerebellar vermis",
+              "It is classified as WHO Grade I because it occurs in children",
+              "It often presents with signs and symptoms of hydrocephalus"
+            ],
+            "originalOptions": [
+              "It is the most common malignant primary brain tumor in children",
+              "It is a small cell embryonal tumor that typically arises in the cerebellar vermis",
+              "It is classified as WHO Grade I because it occurs in children",
+              "It often presents with signs and symptoms of hydrocephalus"
+            ],
+            "correctAnswer": "C) It is classified as WHO Grade I because it occurs in children",
+            "correctAnswerText": "It is classified as WHO Grade I because it occurs in children",
+            "correctIndex": 2,
+            "correctAnswerLetter": "C",
+            "explanation": "",
+            "batchName": "",
+            "pageNumber": "",
+            "subjectName": "Neurosurgery",
+            "subjectId": "neurosurgery",
+            "lectureName": "CNS Tumours",
+            "groupName": "CNS Tumours",
+            "sourceType": "lecture"
+          }
+        ]
+      },
+      {
         "id": "neurosurgery__lecture__headache",
         "name": "Headache",
         "type": "lecture",
@@ -702,6 +798,93 @@
         "sourceType": "lecture"
       },
       {
+        "id": "neurosurgery__lecture__cns-tumours__1__99khva",
+        "number": "1",
+        "text": "CNS Tumours What is the most common primary brain tumor in adults?",
+        "options": [
+          "Meningioma",
+          "Pituitary adenoma",
+          "Glioblastoma multiforme (GBM)",
+          "Ependymoma"
+        ],
+        "originalOptions": [
+          "Meningioma",
+          "Pituitary adenoma",
+          "Glioblastoma multiforme (GBM)",
+          "Ependymoma"
+        ],
+        "correctAnswer": "C) Glioblastoma multiforme (GBM)",
+        "correctAnswerText": "Glioblastoma multiforme (GBM)",
+        "correctIndex": 2,
+        "correctAnswerLetter": "C",
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "CNS Tumours",
+        "groupName": "CNS Tumours",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "neurosurgery__lecture__cns-tumours__2__yes2uv",
+        "number": "2",
+        "text": "Which of the following tumors has the WORST prognosis (mean survival)?",
+        "options": [
+          "Anaplastic astrocytoma",
+          "Untreated prolactinoma",
+          "Hemangioblastoma with von Hippel-Lindau",
+          "Glioblastoma multiforme (GBM)"
+        ],
+        "originalOptions": [
+          "Anaplastic astrocytoma",
+          "Untreated prolactinoma",
+          "Hemangioblastoma with von Hippel-Lindau",
+          "Glioblastoma multiforme (GBM)"
+        ],
+        "correctAnswer": "D) Glioblastoma multiforme (GBM)",
+        "correctAnswerText": "Glioblastoma multiforme (GBM)",
+        "correctIndex": 3,
+        "correctAnswerLetter": "D",
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "CNS Tumours",
+        "groupName": "CNS Tumours",
+        "sourceType": "lecture"
+      },
+      {
+        "id": "neurosurgery__lecture__cns-tumours__3__imyd44",
+        "number": "3",
+        "text": "Which of the following statements regarding Medulloblastoma is WRONG?",
+        "options": [
+          "It is the most common malignant primary brain tumor in children",
+          "It is a small cell embryonal tumor that typically arises in the cerebellar vermis",
+          "It is classified as WHO Grade I because it occurs in children",
+          "It often presents with signs and symptoms of hydrocephalus"
+        ],
+        "originalOptions": [
+          "It is the most common malignant primary brain tumor in children",
+          "It is a small cell embryonal tumor that typically arises in the cerebellar vermis",
+          "It is classified as WHO Grade I because it occurs in children",
+          "It often presents with signs and symptoms of hydrocephalus"
+        ],
+        "correctAnswer": "C) It is classified as WHO Grade I because it occurs in children",
+        "correctAnswerText": "It is classified as WHO Grade I because it occurs in children",
+        "correctIndex": 2,
+        "correctAnswerLetter": "C",
+        "explanation": "",
+        "batchName": "",
+        "pageNumber": "",
+        "subjectName": "Neurosurgery",
+        "subjectId": "neurosurgery",
+        "lectureName": "CNS Tumours",
+        "groupName": "CNS Tumours",
+        "sourceType": "lecture"
+      },
+      {
         "id": "neurosurgery__lecture__headache__1__5nvp87",
         "number": "1",
         "text": "Headache What is the most likely diagnosis?",
@@ -963,8 +1146,8 @@
         "sourceType": "lecture"
       }
     ],
-    "totalQuestions": 16,
-    "totalLectures": 3,
+    "totalQuestions": 19,
+    "totalLectures": 4,
     "hasAiFolder": false
   }
 ]
