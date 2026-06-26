@@ -1310,7 +1310,7 @@ function ensureGroupOrder(groups, sectionType, subjectName){
 
       const wholeSecondsRemaining = Math.ceil(remaining / 1000);
 
-      if(!state.secondsAlertPlayed && wholeSecondsRemaining === 11){
+      if(!state.secondsAlertPlayed && wholeSecondsRemaining === 13){
         state.secondsAlertPlayed = true;
         playSecondsAlertSound();
       }
