@@ -738,7 +738,7 @@ function subjectMetaRows(subject){
      `<div><span>Lectures</span><strong>${lectureCount}</strong></div>`,
      `<div><span>Questions</span><strong>${lectureQuestions}</strong></div>`
    ];
-   if(subject.years.length){ rows.push(`<div><span>Years</span><strong><span>${subject.years.length} Batches</span><small>${countQuestions(subject.years)} Q</small></strong></div>`); }
+   if(subject.years.length){ rows.push(`<div><span>Years</span><strong dir="ltr"><span dir="ltr">${subject.years.length} Batches</span><small dir="ltr">${countQuestions(subject.years)} Q</small></strong></div>`); }
    if(subject.ai.length){ rows.push(`<div><span>AI Questions</span><strong>${countQuestions(subject.ai)}</strong></div>`); }
    return rows.join('');
 }
@@ -877,14 +877,17 @@ function countQuestions(groups){ return groups.reduce((sum,g)=>sum+g.questions.l
 function buildCategoryCard(type,title,badgeText,itemCount,totalQuestions,enabled){ if(!enabled) return ''; return `<button class="category-card" onclick="openSubjectCategory('${type}')"><span class="category-badge">${badgeText}</span><div class="category-meta"><div><span>المحاضرات</span><strong>${itemCount}</strong></div><div><span>الأسئلة</span><strong>${totalQuestions}</strong></div></div></button>`; }
 function openSubjectCategory(type){
   if(!state.currentSubject) return;
+
   let groups=[], title='';
   let placeholder='ابحث...';
+
   if(type==='lectures'){
     groups=state.currentSubject.lectures;
     title='Lectures';
     placeholder='ابحث عن اسم المحاضرة...';
   } else if(type==='years'){
-    groups=getGroupsWithCompletedLast(state.currentSubject.years);
+    syncCompletedGroupsToBottom(state.currentSubject, 'years');
+    groups=state.currentSubject.years;
     title='Years';
     placeholder='ابحث عن الدفعة...';
   } else {
@@ -892,6 +895,7 @@ function openSubjectCategory(type){
     title='AI';
     placeholder='ابحث عن ملف AI...';
   }
+
   showSelectionScreen(groups, title, { backContext:'subject', searchable:true, searchPlaceholder:placeholder, sectionType:type, collectionType: state.browseMode!=='all' ? state.browseMode : null, displayLabel: state.currentSubject.name + ' · ' + title });
 }
 function backFromSelection(){ if(state.currentSelectionMeta && state.currentSelectionMeta.backContext==='subject' && state.currentSubject) openSubject(state.currentSubject.id); else goHome(); }
@@ -1218,7 +1222,35 @@ function submitExamFinish(){
     showWaitingMessages();
   } else showResults();
 }
-function saveProgress(){ if(!state.currentExam) return; const answers=state.currentExam.mode==='exam'?state.currentExam.answers:state.currentExam.firstAnswers; state.currentExam.questions.forEach((q,idx)=>{ if(answers[idx]===null) return; addProgressId('subject:'+q.subjectName,q.id); const actual=q.originalSourceType||q.sourceType; if(actual==='lecture') addProgressId('lecture:'+q.subjectName+'/'+q.lectureName,q.id); if(actual==='ai') addProgressId('ai:'+q.subjectName+'/'+q.lectureName,q.id); if(q.batchName) addProgressId('year:'+q.subjectName+'/'+q.batchName,q.id); }); saveProgressStore(); updateStatisticsIfOpen(); renderMemories(); }
+function saveProgress(){
+  if(!state.currentExam) return;
+
+  const answers=state.currentExam.mode==='exam'?state.currentExam.answers:state.currentExam.firstAnswers;
+
+  state.currentExam.questions.forEach((q,idx)=>{
+    if(answers[idx]===null) return;
+
+    addProgressId('subject:'+q.subjectName,q.id);
+
+    const actual=q.originalSourceType||q.sourceType;
+
+    if(actual==='lecture') addProgressId('lecture:'+q.subjectName+'/'+q.lectureName,q.id);
+    if(actual==='ai') addProgressId('ai:'+q.subjectName+'/'+q.lectureName,q.id);
+    if(q.batchName) addProgressId('year:'+q.subjectName+'/'+q.batchName,q.id);
+  });
+
+  state.subjects.forEach(subject => {
+    syncCompletedGroupsToBottom(subject, 'years');
+  });
+
+  if(state.currentSubject){
+    syncCompletedGroupsToBottom(state.currentSubject, 'years');
+  }
+
+  saveProgressStore();
+  updateStatisticsIfOpen();
+  renderMemories();
+}
 function showWaitingMessages(){ const waitDiv=el('results-waiting'), contentDiv=el('results-content'), reviewDiv=el('results-review'), messageEl=el('waiting-message'); const messages=['انتظر ...','قاعد بصلّح لك الامتحان ...','استنى شوي ...','هاي قرّبت أكمل ...','أصبر ثواني ...','هيني كمّلت 🫡🐦‍🔥💚']; waitDiv.classList.remove('hidden'); reviewDiv.classList.add('hidden'); reviewDiv.innerHTML=''; contentDiv.innerHTML=''; let idx=0; messageEl.textContent=messages[0]; const interval=setInterval(()=>{ idx=Math.min(idx+1, messages.length-1); messageEl.textContent=messages[idx]; },1150); setTimeout(()=>{ clearInterval(interval); waitDiv.classList.add('hidden'); showResults(); },7000); }
 function calculateScore(exam){ const questions=exam.questions; const answers=exam.mode==='exam'?exam.answers:exam.firstAnswers; const total=questions.length; const answered=answers.filter(a=>a!==null).length; const correct=answers.reduce((sum,a,idx)=>sum + (a!==null && isAnswerCorrect(questions[idx],a) ? 1 : 0),0); return {total, answered, correct, unanswered:total-answered, incorrect:answered-correct, score: total>0 ? Math.round((correct/total)*100) : 0}; }
 function renderMasteredWrongButton(){ if(!state.currentExam || !state.currentExam.masteredWrongIds || !state.currentExam.masteredWrongIds.length) return ''; return `<button class="btn-secondary mt-10" onclick="confirmBulkRemoveMasteredWrong()">✅ إزالة الأسئلة التي تمكنت منها من الأسئلة الخاطئة</button>`; }
@@ -1259,21 +1291,53 @@ function getGroupProgressKey(type, subjectName, groupName){ return type+':'+subj
 function getAnsweredCountForKey(key){
   return getNormalizedProgressIdsForKey(key).length;
 }
+function normalizeGroupTypeForProgress(type){
+  if(type === 'lectures') return 'lecture';
+  if(type === 'years') return 'year';
+  return type || 'lecture';
+}
+
 function isGroupFullyCompletedForProgress(group){
   if(!group || !Array.isArray(group.questions) || group.questions.length === 0) return false;
-  const type = group.type || 'lecture';
+
+  const type = normalizeGroupTypeForProgress(group.type);
   const subjectName = group.subjectName || state.currentSubject?.name || '';
   const key = getGroupProgressKey(type, subjectName, group.name);
   const answeredIds = new Set(getNormalizedProgressIdsForKey(key));
-  return group.questions.every(q => answeredIds.has(q.id));
+  const questionIds = Array.from(new Set(group.questions.map(q => q.id).filter(Boolean)));
+
+  if(questionIds.length !== group.questions.length) return false;
+
+  return questionIds.every(id => answeredIds.has(id));
 }
+
 function getGroupsWithCompletedLast(groups){
-  return (groups || []).slice().sort((a,b)=>{
-    const ac = isGroupFullyCompletedForProgress(a) ? 1 : 0;
-    const bc = isGroupFullyCompletedForProgress(b) ? 1 : 0;
-    if(ac !== bc) return ac - bc;
-    return 0;
+  const list = (groups || []).slice();
+  const incomplete = [];
+  const completed = [];
+
+  list.forEach(group => {
+    if(isGroupFullyCompletedForProgress(group)) completed.push(group);
+    else incomplete.push(group);
   });
+
+  return incomplete.concat(completed);
+}
+
+function syncCompletedGroupsToBottom(subject, sectionType){
+  if(!subject) return;
+
+  if(sectionType === 'years'){
+    subject.years = getGroupsWithCompletedLast(subject.years || []);
+  }
+
+  if(sectionType === 'ai'){
+    subject.ai = getGroupsWithCompletedLast(subject.ai || []);
+  }
+
+  if(sectionType === 'lectures'){
+    subject.lectures = getGroupsWithCompletedLast(subject.lectures || []);
+  }
 }
 function getSectionSummary(subject, type){ const groups = type==='lecture' ? subject.lectures : type==='ai' ? subject.ai : subject.years; const totalQuestions = groups.reduce((sum,g)=>sum+g.questions.length,0); let answered = 0; groups.forEach(g=>answered += getAnsweredCountForKey(getGroupProgressKey(type, subject.name, g.name))); const pct = totalQuestions ? Math.round((answered/totalQuestions)*100) : 0; return { groups, totalQuestions, answered, pct }; }
 function resetProgressFull(){ askConfirm('هل تريد إعادة ضبط جميع البيانات (جميع المواد)؟ لا يمكن التراجع عن هذا الإجراء.', ()=>{ state.progress={}; saveProgressStore(); showToast('تمت إعادة ضبط جميع بيانات التقدم.','success'); updateStatisticsIfOpen(); renderMemories(); }); }
