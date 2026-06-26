@@ -631,29 +631,34 @@ function showResetConfirmation(){
 }
 function goResetStep1(){ el('reset-step1').classList.remove('hidden'); el('reset-step2').classList.add('hidden'); }
 function executeResetStatistics(){
-  const selected = state.resetSelectedSubjects;
-  const allSubjects = sortSubjects(state.subjects);
-  const toDelete = new Set(selected);
-  const newProgress = {};
-  for(const [key, value] of Object.entries(state.progress)){
-    let keep = true;
-    for(const subject of allSubjects){
-      if(toDelete.has(subject.id)){
-        if(key === `subject:${subject.name}`) keep = false;
-        if(key.startsWith(`lecture:${subject.name}/`)) keep = false;
-        if(key.startsWith(`year:${subject.name}/`)) keep = false;
-        if(key.startsWith(`ai:${subject.name}/`)) keep = false;
-      }
-    }
-    if(keep) newProgress[key] = value;
-  }
-  state.progress = newProgress;
-  saveProgressStore();
-  renderStatisticsPage();
-  closeResetModal();
-  showToast('تم إعادة ضبط البيانات للمواد المحددة.', 'success');
-  updateStatisticsIfOpen();
-  renderMemories();
+   const selected = state.resetSelectedSubjects;
+   const allSubjects = sortSubjects(state.subjects);
+   const toDelete = new Set(selected);
+   const newProgress = {};
+   for(const [key, value] of Object.entries(state.progress)){
+     let keep = true;
+     for(const subject of allSubjects){
+       if(toDelete.has(subject.id)){
+         if(key === `subject:${subject.name}`) keep = false;
+         if(key.startsWith(`lecture:${subject.name}/`)) keep = false;
+         if(key.startsWith(`year:${subject.name}/`)) keep = false;
+         if(key.startsWith(`ai:${subject.name}/`)) keep = false;
+       }
+     }
+     if(keep) newProgress[key] = value;
+   }
+   state.progress = newProgress;
+   state.subjectStatsSettings = Object.keys(state.subjectStatsSettings).reduce((acc, subjectId) => {
+     if(!toDelete.has(subjectId)) acc[subjectId] = state.subjectStatsSettings[subjectId];
+     return acc;
+   }, {});
+   persistSubjectStatsSettings();
+   saveProgressStore();
+   renderStatisticsPage();
+   closeResetModal();
+   showToast('تم إعادة ضبط البيانات للمواد المحددة.', 'success');
+   updateStatisticsIfOpen();
+   renderMemories();
 }
 function toggleStatistics(){ openStatisticsPage(); }
 function updateStatisticsIfOpen(){
@@ -677,15 +682,15 @@ function getCurrentBrowseSubjects(){
 
 function setEmptyText(text, icon='📁'){ if(el('subjects-empty-text')) el('subjects-empty-text').textContent=text; const empty=el('subjects-empty'); const ic=empty?empty.querySelector('.empty-icon'):null; if(ic) ic.textContent=icon; }
 function subjectMetaRows(subject){
-  const lectureCount = subject.lectures.length;
-  const lectureQuestions = countQuestions(subject.lectures);
-  const rows = [
-    `<div><span>Lectures</span><strong>${lectureCount}</strong></div>`,
-    `<div><span>Questions</span><strong>${lectureQuestions}</strong></div>`
-  ];
-  if(subject.years.length){ rows.push(`<div><span>Years</span><strong><span>Batchs ${subject.years.length}</span><small>${countQuestions(subject.years)}Q</small></strong></div>`); }
-  if(subject.ai.length){ rows.push(`<div><span>AI Questions</span><strong>${countQuestions(subject.ai)}</strong></div>`); }
-  return rows.join('');
+   const lectureCount = subject.lectures.length;
+   const lectureQuestions = countQuestions(subject.lectures);
+   const rows = [
+     `<div><span>Lectures</span><strong>${lectureCount}</strong></div>`,
+     `<div><span>Questions</span><strong>${lectureQuestions}</strong></div>`
+   ];
+   if(subject.years.length){ rows.push(`<div><span>Years</span><strong><span>${subject.years.length} Batches</span><small>${countQuestions(subject.years)} Q</small></strong></div>`); }
+   if(subject.ai.length){ rows.push(`<div><span>AI Questions</span><strong>${countQuestions(subject.ai)}</strong></div>`); }
+   return rows.join('');
 }
 function renderSubjects(){
   const container=el('subjects-list'); const empty=el('subjects-empty'); if(!container||!empty) return;
@@ -789,27 +794,33 @@ function renderChecklistSubject(){
 }
 function toggleChecklistSubject(subjectId){ openChecklistSubject(subjectId); }
 function toggleChecklistLecture(groupId){ 
-  const subject = state.currentSubject;
-  if(!subject) return;
-  
-  const lectures = subject.lectures || [];
-  const lectureIndex = lectures.findIndex(g => g.id === groupId);
-  if(lectureIndex === -1) return;
-  
-  const isCurrentlyCompleted = state.checklistCompleted[groupId];
-  
-  if(!isCurrentlyCompleted) {
-    state.checklistCompleted[groupId] = true;
-  } else {
-    state.checklistCompleted[groupId] = true;
-    
-    const completedLecture = lectures[lectureIndex];
-    lectures.splice(lectureIndex, 1);
-    lectures.push(completedLecture);
-  }
-  
-  saveChecklistStore(); 
-  renderChecklistSubject();
+   const subject = state.currentSubject;
+   if(!subject) return;
+   
+   const lectures = subject.lectures || [];
+   const lectureIndex = lectures.findIndex(g => g.id === groupId);
+   if(lectureIndex === -1) return;
+   
+   const isCurrentlyCompleted = state.checklistCompleted[groupId];
+   
+   if(!isCurrentlyCompleted) {
+     state.checklistCompleted[groupId] = true;
+     const allCompleted = lectures.every(g => state.checklistCompleted[g.id]);
+     
+     if(allCompleted) {
+       const completedLecture = lectures[lectureIndex];
+       lectures.splice(lectureIndex, 1);
+       lectures.push(completedLecture);
+     }
+   } else {
+     state.checklistCompleted[groupId] = false;
+     const completedLecture = lectures[lectureIndex];
+     lectures.splice(lectureIndex, 1);
+     lectures.push(completedLecture);
+   }
+   
+   saveChecklistStore(); 
+   renderChecklistSubject();
 }
 function openSubject(subjectId){ state.currentSubject=state.displayedSubjects.find(s=>s.id===subjectId) || state.subjects.find(s=>s.id===subjectId) || null; if(!state.currentSubject){ showToast('المادة غير موجودة.','error'); return; } const t=theme(); el('subject-sections-title').textContent=state.currentSubject.name; el('subject-sections-summary').innerHTML=`<div class="subject-summary-grid"><div><span>${t.icons.lectures} المحاضرات</span><strong>${state.currentSubject.lectures.length}</strong></div><div><span>${t.icons.years} Years</span><strong>${state.currentSubject.years.length}</strong></div><div><span>${t.icons.ai} AI</span><strong>${state.currentSubject.ai.length}</strong></div><div><span>${t.icons.progress} إجمالي الأسئلة</span><strong>${state.currentSubject.totalQuestions}</strong></div></div>`; const cards=[]; if(state.currentSubject.lectures.length) cards.push(buildCategoryCard('lectures','Lectures','Lectures',state.currentSubject.lectures.length,countQuestions(state.currentSubject.lectures),true)); if(state.currentSubject.years.length) cards.push(buildCategoryCard('years','Years','Years',state.currentSubject.years.length,countQuestions(state.currentSubject.years),true)); if(state.currentSubject.ai.length || (state.browseMode==='all' && state.currentSubject.hasAiFolder)) cards.push(buildCategoryCard('ai','AI','AI',state.currentSubject.ai.length,countQuestions(state.currentSubject.ai),state.currentSubject.ai.length>0 || (state.browseMode==='all' && state.currentSubject.hasAiFolder))); el('subject-categories').innerHTML=cards.join('') || '<div class="empty-state"><div class="empty-icon">📭</div><p>لا توجد ملفات TXT بعد داخل هذه المادة.</p></div>'; showScreen('subject-sections-screen'); }
 function countQuestions(groups){ return groups.reduce((sum,g)=>sum+g.questions.length,0); }
