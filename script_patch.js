@@ -199,8 +199,15 @@ function moveGroupToBottomByInfo(subjectName, sectionType, groupId){
       if(completed){
         if(!state.checklistCompleted[group.id]){
           state.checklistCompleted[group.id] = true;
-          // لا نقوم بنقل العنصر إلى الأسفل تلقائياً، بل نتركه في مكانه
-          // moveGroupToBottomByInfo(subject.name, sectionType, group.id);
+          changed = true;
+        }
+
+        const prefKey = getGroupOrderKey(subject.name, sectionType);
+        const before = JSON.stringify(Array.isArray(state.groupPreferences[prefKey]) ? state.groupPreferences[prefKey] : []);
+        moveGroupToBottomByInfo(subject.name, sectionType, group.id);
+        const after = JSON.stringify(Array.isArray(state.groupPreferences[prefKey]) ? state.groupPreferences[prefKey] : []);
+
+        if(before !== after){
           changed = true;
         }
       } else {
@@ -208,36 +215,26 @@ function moveGroupToBottomByInfo(subjectName, sectionType, groupId){
           delete state.checklistCompleted[group.id];
           changed = true;
         }
-
-        // لا نقوم باستعادة الترتيب الأصلي تلقائياً، بل نتركه كما هو
-        // const prefKey = getGroupOrderKey(subject.name, sectionType);
-        // const before = JSON.stringify(Array.isArray(state.groupPreferences[prefKey]) ? state.groupPreferences[prefKey] : []);
-        // restoreGroupToOriginalPosition(subject.name, sectionType, group.id);
-        // const after = JSON.stringify(Array.isArray(state.groupPreferences[prefKey]) ? state.groupPreferences[prefKey] : []);
-        // if(before !== after) changed = true;
       }
     }
 
     for(const subject of (state.subjects || [])){
-      // تزامن Lectures فقط مع Checklist
       for(const group of (subject.lectures || [])){
         syncGroup(subject, group, 'lectures', `lecture:${subject.name}/${group.name}`);
       }
 
-      // إزالة تزامن AI و Years مع Checklist
-      // for(const group of (subject.ai || [])){
-      //   syncGroup(subject, group, 'ai', `ai:${subject.name}/${group.name}`);
-      // }
+      for(const group of (subject.ai || [])){
+        syncGroup(subject, group, 'ai', `ai:${subject.name}/${group.name}`);
+      }
 
-      // for(const group of (subject.years || [])){
-      //   syncGroup(subject, group, 'years', `year:${subject.name}/${group.name}`);
-      // }
+      for(const group of (subject.years || [])){
+        syncGroup(subject, group, 'years', `year:${subject.name}/${group.name}`);
+      }
     }
 
     if(changed){
       try{ saveChecklistStore(); }catch(e){}
-      // لا نحتاج لحفظ groupPreferences هنا لأننا لم نغيره
-      // try{ saveGroupPreferences(); }catch(e){}
+      try{ saveGroupPreferences(); }catch(e){}
     }
 
     return changed;
@@ -794,6 +791,24 @@ function moveGroupToBottomByInfo(subjectName, sectionType, groupId){
     const countLabel = type === 'years' ? 'الدُفع السابقة' : 'المحاضرات';
     return `<button class="category-card" onclick="openSubjectCategory('${type}')"><span class="category-badge">${badgeText}</span><div class="category-meta"><div><span>${countLabel}</span><strong>${itemCount}</strong></div><div><span>الأسئلة</span><strong>${totalQuestions}</strong></div></div></button>`;
   };
+      subjectMetaRows = function(subject){
+    const lectureCount = subject.lectures.length;
+    const lectureQuestions = countQuestions(subject.lectures);
+    const rows = [
+      `<div><span>Lectures</span><strong>${lectureCount}</strong></div>`,
+      `<div><span>Questions</span><strong>${lectureQuestions}</strong></div>`
+    ];
+
+    if(subject.years.length){
+      rows.push(`<div><span>Years</span><strong dir="ltr" style="display:flex; flex-direction:column; align-items:flex-start; text-align:left;"><span dir="ltr">${subject.years.length} Batches</span><small dir="ltr" style="display:block; text-align:left;">${countQuestions(subject.years)}Q</small></strong></div>`);
+    }
+
+    if(subject.ai.length){
+      rows.push(`<div><span>AI Questions</span><strong>${countQuestions(subject.ai)}</strong></div>`);
+    }
+
+    return rows.join('');
+  };
     function shouldCountYearsOnlyInSubjectSummary(settings){
     return !!settings && settings.lectures === false && settings.ai === false && settings.years !== false;
   }
@@ -927,15 +942,26 @@ function ensureGroupOrder(groups, sectionType, subjectName){
     const __origSaveProgressForAutoComplete = typeof saveProgress === 'function' ? saveProgress : null;
   saveProgress = function(){
     if(__origSaveProgressForAutoComplete) __origSaveProgressForAutoComplete();
-    if(syncAutoCompletedLectures()) rerenderAfterChecklistRelatedChange();
-  };
 
+    const changed = syncAutoCompletedLectures();
+
+    try{ saveChecklistStore(); }catch(e){}
+    try{ saveGroupPreferences(); }catch(e){}
+    try{ saveProgressStore(); }catch(e){}
+
+    if(changed) rerenderAfterChecklistRelatedChange();
+  };
   const __origLoadDataForAutoComplete = typeof loadData === 'function' ? loadData : null;
   loadData = async function(){
     if(__origLoadDataForAutoComplete) await __origLoadDataForAutoComplete();
-    if(syncAutoCompletedLectures()) rerenderAfterChecklistRelatedChange();
-  };
 
+    const changed = syncAutoCompletedLectures();
+
+    try{ saveChecklistStore(); }catch(e){}
+    try{ saveGroupPreferences(); }catch(e){}
+
+    if(changed) rerenderAfterChecklistRelatedChange();
+  };
   const __origExecuteResetStatisticsPatch = typeof executeResetStatistics === 'function' ? executeResetStatistics : null;
   executeResetStatistics = function(){
     if(__origExecuteResetStatisticsPatch) __origExecuteResetStatisticsPatch();
@@ -1310,7 +1336,7 @@ function ensureGroupOrder(groups, sectionType, subjectName){
 
       const wholeSecondsRemaining = Math.ceil(remaining / 1000);
 
-      if(!state.secondsAlertPlayed && wholeSecondsRemaining === 13){
+      if(!state.secondsAlertPlayed && wholeSecondsRemaining === 11){
         state.secondsAlertPlayed = true;
         playSecondsAlertSound();
       }
